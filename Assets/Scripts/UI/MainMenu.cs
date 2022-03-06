@@ -23,53 +23,56 @@
 
 using UnityEngine.EventSystems;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Assertions;
 
-public class PauseMenu : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
+    [Header("Menu")] [SerializeField] private GameObject m_mainMenu, m_optionMenu;
+
+    [Header("First UI elemtent in Menu")] [SerializeField]
+    private GameObject m_mainFirstItem, m_optionFirstItem;
+
 
     #region UnityAPI
 
     private void Start()
-    {
-        GameManager.Instance.GameResumed += TurnBackOnGameUI;
-        GameManager.Instance.GamePaused += TurnOnPauseMenu;
-        GameManager.Instance.EndGame += TurnOffAllUI;
-        TurnBackOnGameUI();
+    { 
+        NullChecks();
+        Invoke("TurnOnMainMenu", 0.5f);
+      
+       
     }
 
-    private void OnDisable()
+    #endregion
+
+    #region Public
+
+    public void TurnOnOptionsMenu()
     {
-        GameManager.Instance.GameResumed -= TurnBackOnGameUI;
-        GameManager.Instance.GamePaused -= TurnOnPauseMenu;
-        GameManager.Instance.EndGame -= TurnOffAllUI;
+        m_optionMenu.SetActive(true);
+        m_mainMenu.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(m_optionFirstItem);
+    }
+
+    public void TurnOnMainMenu()
+    {
+        m_optionMenu.SetActive(false);
+        m_mainMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(m_mainFirstItem);
     }
 
     #endregion
 
     #region private
 
-    private void TurnOnPauseMenu()
+    private void NullChecks()
     {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-       
-    }
-
-    private void TurnBackOnGameUI()
-    {
-        m_mainGameUI.SetActive(true);
-        m_pauseMenu.SetActive(false);
-    }
-
-    private void TurnOffAllUI()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(false);
+        Assert.IsNotNull(m_mainMenu);
+        Assert.IsNotNull(m_optionMenu);
+        Assert.IsNotNull(m_mainFirstItem);
+        Assert.IsNotNull(m_optionFirstItem);
     }
 
     #endregion

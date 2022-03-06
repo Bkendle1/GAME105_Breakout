@@ -27,24 +27,24 @@ using UnityEngine.Assertions;
 
 public class GameManager : Singleton<GameManager>
 {
-
     public Action GamePaused;
     public Action GameResumed;
     public Action LiveLost;
+    public Action EndGame;
+    public bool NewHighScore => m_newHighScore;
     public bool IsGamePaused => m_isGamePaused;
     public GameState GetGameState => m_gameState;
-    
+
     [SerializeField] private UIText m_scoreUI = null, m_livesUI = null;
-    [SerializeField] private SceneSwap m_sceneSwaper = null;
-    private int m_score = 0, m_lives =3;
-    private bool m_isGamePaused = false;
+
+    private int m_score = 0, m_lives = 3;
+    private bool m_isGamePaused = false, m_newHighScore = false;
     private GameState m_gameState = GameState.Playing;
-    
+
     #region UnityAPI
 
     private void Start()
     {
-        
         InputController.Instance.PausePressed += InputPausedCalled;
         NullChecks();
     }
@@ -54,30 +54,25 @@ public class GameManager : Singleton<GameManager>
         InputController.Instance.PausePressed -= InputPausedCalled;
     }
 
-
     #endregion
 
-    #region  Public
+    #region Public
 
-    
-    
     public void PauseGame(bool DoGamePaused)
     {
         if (DoGamePaused)
         {
             GamePaused?.Invoke();
-            
         }
         else
         {
             GameResumed?.Invoke();
-
         }
 
         m_isGamePaused = DoGamePaused;
         Debug.Log("GamePaused:" + DoGamePaused);
     }
-    
+
     public void UpdateScore(int value)
     {
         m_score += value;
@@ -86,37 +81,42 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateLives(int value)
     {
-        if(value < 0)
+        if (value < 0)
             LiveLost?.Invoke();
-        
+
         if (m_lives - value == 0)
         {
             GameOver();
             return;
         }
-            
+
         m_lives += value;
         m_livesUI.UpdateUI(m_lives);
-        
-      
     }
 
     public void LevelClear()
     {
         m_gameState = GameState.ClearLevel;
     }
+
+    public void GameOver()
+    {
+        m_gameState = GameState.GameOver;
+        CheckForNewHighScore();
+        EndGame?.Invoke();
+    }
+
     #endregion
+
 
     #region Private
 
-    
-
-  
-    private void GameOver()
+    private void CheckForNewHighScore()
     {
-        m_gameState = GameState.GameOver;
-        m_sceneSwaper.ChangeScene();
-        
+        if (m_score <= GameSettings.HighScore)
+            return;
+        GameSettings.HighScoreSet(m_score);
+        m_newHighScore = true;
     }
 
     private void InputPausedCalled()
@@ -126,17 +126,14 @@ public class GameManager : Singleton<GameManager>
         else
             PauseGame(true);
     }
-    
+
     private void NullChecks()
     {
-        Assert.IsNotNull(m_sceneSwaper);
-       
         Assert.IsNotNull(m_scoreUI);
         Assert.IsNotNull(m_livesUI);
-       
     }
+
     #endregion
-    
 }
 
 public enum GameState
@@ -144,5 +141,4 @@ public enum GameState
     Playing,
     GameOver,
     ClearLevel
-    
 }

@@ -31,7 +31,7 @@ public class AudioMusicPlayer : Singleton<AudioMusicPlayer>
     private AudioSource _audioSourceA, _audioSourceB;
     private AudioClip _musicClipA = null, _musicClipB = null;
     private Coroutine _fadeA = null, _fadeB = null;
-    private float m_maxVolume = 1f;
+    private float m_volume = 1f;
     
     public bool IsCrossFadeHappening => _fadeA == null && _fadeB == null;
     public bool IsClipPlaying => _audioSourceA.isPlaying || _audioSourceB.isPlaying;
@@ -44,8 +44,18 @@ public class AudioMusicPlayer : Singleton<AudioMusicPlayer>
         _audioSourceB = gameObject.AddComponent<AudioSource>();
         _audioSourceB.loop = true;
         _audioSourceB.playOnAwake = false;
-        m_maxVolume = GameSettings.MusicVolume;
+        m_volume = GameSettings.MusicVolumeGet;
 
+    }
+    
+    private void OnEnable()
+    {
+        GameSettings.MusicUpdated += VolumeUpdate;
+    }
+
+    private void OnDisable()
+    {
+        GameSettings.MusicUpdated -= VolumeUpdate;
     }
 
 
@@ -67,6 +77,7 @@ public class AudioMusicPlayer : Singleton<AudioMusicPlayer>
     {
         //   if (_fadeA != null || _fadeB != null)
         //  return false;
+        maxVolume *= m_volume;
         SetupFade(clip, maxVolume, fadingTime, delayUnitFade);
 
         return true;
@@ -74,7 +85,8 @@ public class AudioMusicPlayer : Singleton<AudioMusicPlayer>
 
     public void FadeMusic(float maxVolume, float fadingTime, float delayUnitFade = 0)
     {
-        
+
+        maxVolume *= m_volume;
         if (_audioSourceA.isPlaying)
             _fadeA = StartCoroutine(
                 CrossFade(_audioSourceA, _audioSourceA.volume, maxVolume, fadingTime, delayUnitFade));
@@ -149,7 +161,10 @@ public class AudioMusicPlayer : Singleton<AudioMusicPlayer>
     {
         _audioSourceB.Stop();
     }
-
+    private void VolumeUpdate(float value)
+    {
+        m_volume = value;
+    }
 
     private void SetupFade(AudioClip clip, float maxVolume, float fadingTime, float delay)
     {

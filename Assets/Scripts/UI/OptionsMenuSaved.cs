@@ -20,56 +20,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THE SOFTWARE 
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
-
-using UnityEngine.EventSystems;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class PauseMenu : MonoBehaviour
+public class OptionsMenuSaved : MonoBehaviour
 {
-    [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
 
-    #region UnityAPI
+    #region public
 
-    private void Start()
+    public void SaveOptions()
     {
-        GameManager.Instance.GameResumed += TurnBackOnGameUI;
-        GameManager.Instance.GamePaused += TurnOnPauseMenu;
-        GameManager.Instance.EndGame += TurnOffAllUI;
-        TurnBackOnGameUI();
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.GameResumed -= TurnBackOnGameUI;
-        GameManager.Instance.GamePaused -= TurnOnPauseMenu;
-        GameManager.Instance.EndGame -= TurnOffAllUI;
-    }
-
-    #endregion
-
-    #region private
-
-    private void TurnOnPauseMenu()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-       
-    }
-
-    private void TurnBackOnGameUI()
-    {
-        m_mainGameUI.SetActive(true);
-        m_pauseMenu.SetActive(false);
-    }
-
-    private void TurnOffAllUI()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(false);
+        GameSettings.SaveData();
     }
 
     #endregion

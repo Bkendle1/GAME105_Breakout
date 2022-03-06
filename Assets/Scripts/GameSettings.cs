@@ -21,37 +21,57 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public static class GameSettings
 {
-   
+    public static Action<float> SoundUpdated;
+    public static Action<float> MusicUpdated;
+    public static Action SavingGame;
     public static float DeadZoneValue => m_config.DeadZone;
-    public static float SFXVolume => m_config.SFXVolume;
-    public static float MusicVolume => m_config.MusicVolume;
+    public static float SFXVolumeGet => m_config.SFXVolume;
+    public static float MusicVolumeGet => m_config.MusicVolume;
     public static int LiveCountDefault => m_config.LivesCount;
     public static int HighScore => m_config.HighScore;
-    
-    private static GameConfig m_config = new GameConfig();
+
+    private static GameConfig m_config = new GameConfig(new Data(0.1f, 1f, 1f, 3, 0));
     private const string _configFile = "Config";
-    
+
+    public static void MusicVolumeSet(float value)
+    {
+        MusicUpdated?.Invoke(value);
+        m_config.MusicVolume = value;
+    }
+
+    public static void SfXVolumeSet(float value)
+    {
+        SoundUpdated?.Invoke(value);
+        m_config.SFXVolume = value;
+    }
+
+    public static void HighScoreSet(int value)
+    {
+        m_config.HighScore = value;
+    }
+
     public static void LoadData()
     {
         if (!global::SaveData.Load(ref m_config, _configFile))
-            global::SaveData.Save(m_config, _configFile);
+            SaveData();
     }
 
     public static void SaveData()
     {
+        SavingGame?.Invoke();
         global::SaveData.Save(m_config, _configFile);
     }
 }
 
 public static class SaveData
 {
-    
     public static void Save<T>(T arg, string FileName)
     {
         BinaryFormatter bf = new BinaryFormatter();
@@ -99,8 +119,6 @@ public struct Data
         LivesCount = lives;
         HighScore = score;
     }
-
-    
 }
 
 [System.Serializable]
@@ -111,7 +129,7 @@ public class GameConfig
     public float MusicVolume;
     public int LivesCount;
     public int HighScore;
-        
+
     public GameConfig(Data Data)
     {
         DeadZone = Data.DeadZone;
@@ -120,8 +138,8 @@ public class GameConfig
         LivesCount = Data.LivesCount;
         HighScore = Data.LivesCount;
     }
+
     public GameConfig()
     {
-
     }
 }

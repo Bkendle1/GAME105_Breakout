@@ -21,55 +21,27 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
-using UnityEngine.EventSystems;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 
-public class PauseMenu : MonoBehaviour
+[RequireComponent(typeof(EventTrigger))]
+public class EventUITrigger : EventTrigger
 {
-    [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
+    [SerializeField] private bool m_CancelButton = false;
 
-    #region UnityAPI
+    #region MyRegion
 
-    private void Start()
+    public override void OnSelect(BaseEventData eventData)
     {
-        GameManager.Instance.GameResumed += TurnBackOnGameUI;
-        GameManager.Instance.GamePaused += TurnOnPauseMenu;
-        GameManager.Instance.EndGame += TurnOffAllUI;
-        TurnBackOnGameUI();
+        AudioUIplayer.Instance.PlayMoveEffect();
     }
 
-    private void OnDisable()
+    public override void OnSubmit(BaseEventData data)
     {
-        GameManager.Instance.GameResumed -= TurnBackOnGameUI;
-        GameManager.Instance.GamePaused -= TurnOnPauseMenu;
-        GameManager.Instance.EndGame -= TurnOffAllUI;
-    }
-
-    #endregion
-
-    #region private
-
-    private void TurnOnPauseMenu()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-       
-    }
-
-    private void TurnBackOnGameUI()
-    {
-        m_mainGameUI.SetActive(true);
-        m_pauseMenu.SetActive(false);
-    }
-
-    private void TurnOffAllUI()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(false);
+        if (m_CancelButton)
+            AudioUIplayer.Instance.PlayCancelEffect();
+        else
+            AudioUIplayer.Instance.PlaySelectEffect();
     }
 
     #endregion

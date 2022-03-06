@@ -21,56 +21,42 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
-using UnityEngine.EventSystems;
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Assertions;
 
-public class PauseMenu : MonoBehaviour
+[RequireComponent(typeof(SceneSwap))]
+public class SaveScreenWarning : MonoBehaviour
 {
-    [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
+    [SerializeField] private float m_warningScreenTime = 7f;
+    [SerializeField] private SaveWarning m_saveWarning; 
+    private SceneSwap m_sceneSwaper;
 
     #region UnityAPI
 
     private void Start()
     {
-        GameManager.Instance.GameResumed += TurnBackOnGameUI;
-        GameManager.Instance.GamePaused += TurnOnPauseMenu;
-        GameManager.Instance.EndGame += TurnOffAllUI;
-        TurnBackOnGameUI();
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.GameResumed -= TurnBackOnGameUI;
-        GameManager.Instance.GamePaused -= TurnOnPauseMenu;
-        GameManager.Instance.EndGame -= TurnOffAllUI;
+        m_sceneSwaper = GetComponent<SceneSwap>();
+        NullCheck();
+        GameSettings.LoadData();
+        Invoke("SwapToTitle",m_warningScreenTime);
+        m_saveWarning.ShowWarning();
     }
 
     #endregion
 
     #region private
 
-    private void TurnOnPauseMenu()
+    private void SwapToTitle()
     {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-       
+        m_sceneSwaper.ChangeScene();
     }
 
-    private void TurnBackOnGameUI()
+    private void NullCheck()
     {
-        m_mainGameUI.SetActive(true);
-        m_pauseMenu.SetActive(false);
+        Assert.IsNotNull(m_sceneSwaper);
+        Assert.IsNotNull(m_saveWarning);
     }
-
-    private void TurnOffAllUI()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(false);
-    }
-
+    
     #endregion
 }

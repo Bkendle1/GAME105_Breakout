@@ -21,55 +21,62 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
-using UnityEngine.EventSystems;
+using UI;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Assertions;
 
-public class PauseMenu : MonoBehaviour
+[RequireComponent(typeof(ImageFade))]
+public class SaveWarning : MonoBehaviour
 {
-    [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
+    [SerializeField] private float m_fadeTime = 1.2f;
+    private ImageFade m_fader;
 
     #region UnityAPI
 
     private void Start()
     {
-        GameManager.Instance.GameResumed += TurnBackOnGameUI;
-        GameManager.Instance.GamePaused += TurnOnPauseMenu;
-        GameManager.Instance.EndGame += TurnOffAllUI;
-        TurnBackOnGameUI();
+        m_fader = GetComponent<ImageFade>();
+        NullCheck();
+    }
+
+    private void OnEnable()
+    {
+        GameSettings.SavingGame += TurnOnWarning;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.GameResumed -= TurnBackOnGameUI;
-        GameManager.Instance.GamePaused -= TurnOnPauseMenu;
-        GameManager.Instance.EndGame -= TurnOffAllUI;
+        GameSettings.SavingGame -= TurnOnWarning;
+    }
+
+    #endregion
+
+    #region public
+
+    public void ShowWarning()
+    {
+        TurnOnWarning();
     }
 
     #endregion
 
     #region private
 
-    private void TurnOnPauseMenu()
+    private void TurnOnWarning()
     {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-       
+        Debug.Log("called");
+        m_fader.StartFade(m_fadeTime, 1f);
+        Invoke("TurnOffWarning", m_fadeTime + 4f);
     }
 
-    private void TurnBackOnGameUI()
+    private void TurnOffWarning()
     {
-        m_mainGameUI.SetActive(true);
-        m_pauseMenu.SetActive(false);
+        m_fader.StartFade(m_fadeTime, -1f);
     }
 
-    private void TurnOffAllUI()
+    private void NullCheck()
     {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(false);
+        Assert.IsNotNull(m_fader);
     }
 
     #endregion

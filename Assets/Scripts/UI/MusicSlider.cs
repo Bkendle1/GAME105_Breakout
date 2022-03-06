@@ -21,55 +21,47 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
-using UnityEngine.EventSystems;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Assertions;
+using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour
+public class MusicSlider : MonoBehaviour
 {
-    [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
+    [SerializeField] private UIText m_text;
+    private Slider m_slider;
 
     #region UnityAPI
 
     private void Start()
     {
-        GameManager.Instance.GameResumed += TurnBackOnGameUI;
-        GameManager.Instance.GamePaused += TurnOnPauseMenu;
-        GameManager.Instance.EndGame += TurnOffAllUI;
-        TurnBackOnGameUI();
+        m_slider = GetComponent<Slider>();
+        NullChecks();
+        m_slider.value = GameSettings.MusicVolumeGet;
+        m_text.UpdateUI((int)(GameSettings.MusicVolumeGet *100f));
     }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.GameResumed -= TurnBackOnGameUI;
-        GameManager.Instance.GamePaused -= TurnOnPauseMenu;
-        GameManager.Instance.EndGame -= TurnOffAllUI;
-    }
+    
 
     #endregion
 
+    #region public
+
+    public void ValueChanged()
+    {
+        GameSettings.MusicVolumeSet(m_slider.value);
+        m_text.UpdateUI((int)(GameSettings.MusicVolumeGet *100f));
+    }
+
+    
+
+    #endregion
+    
     #region private
 
-    private void TurnOnPauseMenu()
+   
+    private void NullChecks()
     {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(true);
-
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-       
-    }
-
-    private void TurnBackOnGameUI()
-    {
-        m_mainGameUI.SetActive(true);
-        m_pauseMenu.SetActive(false);
-    }
-
-    private void TurnOffAllUI()
-    {
-        m_mainGameUI.SetActive(false);
-        m_pauseMenu.SetActive(false);
+        Assert.IsNotNull(m_text);
+        Assert.IsNotNull(m_slider);
     }
 
     #endregion
