@@ -21,6 +21,7 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
+using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -32,9 +33,14 @@ public class MusicSlider : MonoBehaviour
 
     #region UnityAPI
 
-    private void Start()
+    private void Awake()
     {
         m_slider = GetComponent<Slider>();
+    }
+
+    private void Start()
+    {
+        
         NullChecks();
         m_slider.value = GameSettings.MusicVolumeGet;
         m_text.UpdateUI((int)(GameSettings.MusicVolumeGet *100f));

@@ -33,9 +33,14 @@ public class AudioUIplayer : Singleton<AudioUIplayer>
     private float m_volume = 1f;
     #region UnityAPI
 
-    void Start()
+
+    private void Awake()
     {
         m_audioSource = GetComponent<AudioSource>();
+    }
+    void Start()
+    {
+        
         m_volume = GameSettings.SFXVolumeGet;
         NullChecks();
     }

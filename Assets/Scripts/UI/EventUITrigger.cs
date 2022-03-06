@@ -29,7 +29,7 @@ public class EventUITrigger : EventTrigger
 {
     [SerializeField] private bool m_CancelButton = false;
 
-    #region MyRegion
+    #region UnityAPI
 
     public override void OnSelect(BaseEventData eventData)
     {

@@ -46,15 +46,19 @@ public class Paddle : MonoBehaviour,IHandlerInput
     public Transform GetPaddleBallSpawnPointTransform => m_ballSpawnPoint.transform;
 
     #region UnityAPI
-    
+
+    private void Awake()
+    {
+        m_audioSource = this.GetComponent<AudioSource>();
+        m_meshRender = this.GetComponent<MeshRenderer>();
+        m_meshFilter = this.GetComponent<MeshFilter>();
+    }
+
     private void Start()
     {
         Setup();
         m_startLocation = this.transform.position;
         m_location = m_startLocation;
-        m_audioSource = this.GetComponent<AudioSource>();
-        m_meshRender = this.GetComponent<MeshRenderer>();
-        m_meshFilter = this.GetComponent<MeshFilter>();
         GameManager.Instance.LiveLost += Death;
         NullChecks();
         SetupPaddle();

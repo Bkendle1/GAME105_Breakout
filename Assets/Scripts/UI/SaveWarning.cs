@@ -21,6 +21,7 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
+using System;
 using UI;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -33,9 +34,14 @@ public class SaveWarning : MonoBehaviour
 
     #region UnityAPI
 
-    private void Start()
+    private void Awake()
     {
         m_fader = GetComponent<ImageFade>();
+    }
+
+    private void Start()
+    {
+        
         NullCheck();
     }
 

@@ -34,9 +34,14 @@ public class SaveScreenWarning : MonoBehaviour
 
     #region UnityAPI
 
-    private void Start()
+    private void Awake()
     {
         m_sceneSwaper = GetComponent<SceneSwap>();
+    }
+
+    private void Start()
+    {
+       
         NullCheck();
         GameSettings.LoadData();
         Invoke("SwapToTitle",m_warningScreenTime);

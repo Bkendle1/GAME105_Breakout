@@ -21,6 +21,7 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
+using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -37,11 +38,16 @@ public class Brick : PoolObject, IHit
 
     #region UnityAPI
 
-    private void Start()
+    private void Awake()
     {
         m_audioSource = GetComponent<AudioSource>();
         m_meshRender = GetComponent<MeshRenderer>();
         m_meshFilter = GetComponent<MeshFilter>();
+    }
+
+    private void Start()
+    {
+       
 
         NullChecks();
         SetupBrick();

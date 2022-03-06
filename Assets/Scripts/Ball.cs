@@ -47,12 +47,17 @@ public class Ball : MonoBehaviour, IDeath
 
     #region UnityAPI
 
-    private void Start()
+    private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
         m_audioSource = GetComponent<AudioSource>();
         m_meshRender = GetComponent<MeshRenderer>();
         m_meshFilter = GetComponent<MeshFilter>();
+    }
+
+    private void Start()
+    {
+        
         m_rigidbody.useGravity = false;
         NullChecks();
         SetupBallSettings();

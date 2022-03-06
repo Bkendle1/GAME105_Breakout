@@ -20,6 +20,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THE SOFTWARE 
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
+
+using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -31,9 +33,14 @@ public class SoundSlider : MonoBehaviour
 
     #region UnityAPI
 
-    private void Start()
+    private void Awake()
     {
         m_slider = GetComponent<Slider>();
+    }
+
+    private void Start()
+    {
+      
         NullChecks();
         m_slider.value = GameSettings.SFXVolumeGet;
         m_text.UpdateUI((int)(GameSettings.SFXVolumeGet *100f));
