@@ -21,19 +21,29 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
+using vnc.FX;
 
-public class SceneSwap : MonoBehaviour
+public class CameraWater : MonoBehaviour
 {
-    [SerializeField] private int m_sceneNumber = 1;
-     public void ChangeScene()
-        {
-            SceneManager.LoadScene(m_sceneNumber);
-        }
+
+    [SerializeField]
+    private WaterCamera m_water = null;
+
+    private void Start()
+    {
+        NullChecks();
+        TurnOnWaterEffect(true);
+    }
+
+    public void TurnOnWaterEffect(bool turnOn = true)
+    {
+        m_water.effectActive = true;
+    }
     
-        public void ChangeScene(int SceneNumber = 0)
-        {
-            SceneManager.LoadScene(SceneNumber);
-        }
+    private void NullChecks()
+    {
+        Assert.IsNotNull(m_water);
         
+    }
 }

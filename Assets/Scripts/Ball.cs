@@ -33,29 +33,39 @@ using Random = UnityEngine.Random;
 public class Ball : MonoBehaviour, IDeath
 {
     [SerializeField] private Paddle m_paddle;
-    [Header("launch properties")]
-    [Range(35, 90f)] [SerializeField] private float m_lauchAngleRangemax = 90f, m_lauchAngleRangemin = 45f;
-    [Range(50, 90f)] [SerializeField] private float  m_launchSpeedmax = 90f, m_launchSpeedmin =50f;
+    [SerializeField] private BallProp m_ballProperties;
     private Rigidbody m_rigidbody = null;
     private AudioSource m_audioSource;
     private MeshRenderer m_meshRender;
+    private MeshFilter m_meshFilter;
     private bool m_ballInPlay = false;
-  
-    public  bool IsBallInPlay
-    {
-        get { return m_ballInPlay; }
-    }
+
+    public bool IsBallInPlay => m_ballInPlay;
+
+    #region UnityAPI
+
     private void Start()
     {
-        
         m_rigidbody = GetComponent<Rigidbody>();
         m_audioSource = GetComponent<AudioSource>();
         m_meshRender = GetComponent<MeshRenderer>();
+        m_meshFilter = GetComponent<MeshFilter>();
         m_rigidbody.useGravity = false;
         NullChecks();
+        SetupBallSettings();
         ResetBall();
     }
-    
+
+    #endregion
+
+    #region Public
+
+    public void UpdateBallProperties(BallProp prop)
+    {
+        m_ballProperties = prop;
+        SetupBallSettings();
+    }
+
     public void ResetBall()
     {
         m_rigidbody.isKinematic = true;
@@ -63,26 +73,69 @@ public class Ball : MonoBehaviour, IDeath
         transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
         transform.localPosition = Vector3.zero;
         m_meshRender.enabled = enabled;
-
     }
 
 
     public void SetVelocity(Vector2 vel)
     {
-        
     }
 
     public void LaunchBall()
     {
-        if(m_ballInPlay)
+        if (m_ballInPlay)
             return;
         m_ballInPlay = true;
         transform.SetParent(null);
         m_rigidbody.isKinematic = false;
         m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
-        
     }
-    
+
+    #endregion
+
+
+    #region private
+
+    private void SetupBallSettings()
+    {
+        m_meshRender.material = m_ballProperties.GetBallMaterial;
+        m_meshFilter.mesh = m_ballProperties.GetBallMesh;
+    }
+
+    private float RandomizeLaunchDirection()
+    {
+        return Random.Range(m_ballProperties.GetLaunchAngleMin, m_ballProperties.GetLaunchAngleMax);
+    }
+
+    private float RandomizeLaunchSpeed()
+    {
+        return Random.Range(m_ballProperties.GetLaunchSpeedMin, m_ballProperties.GetLaunchSpeedMax);
+    }
+
+
+    private void NullChecks()
+    {
+        Assert.IsNotNull(m_paddle);
+        Assert.IsNotNull(m_rigidbody);
+        Assert.IsNotNull(m_audioSource);
+        Assert.IsNotNull(m_meshRender);
+        Assert.IsNotNull(m_meshFilter);
+        Assert.IsNotNull(m_ballProperties);
+        m_ballProperties.NullChecks();
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.GetComponent<IHit>() != null)
+        {
+            other.gameObject.GetComponent<IHit>().BeenHit();
+        }
+        else
+        {
+            // m_audioSource.PlayOneShot(m_ballProperties.GetWallHitSFX);
+        }
+    }
+
+    #endregion
 
     #region Interfaces
 
@@ -90,36 +143,8 @@ public class Ball : MonoBehaviour, IDeath
     {
         GameManager.Instance.UpdateLives(-1);
         m_meshRender.enabled = false;
-        
-        
+        //m_audioSource.PlayOneShot(m_ballProperties.GetDeatSFX);
     }
 
     #endregion
-
-    private float RandomizeLaunchDirection()
-    {
-        return Random.Range(m_lauchAngleRangemin, m_lauchAngleRangemax);
-    }
-
-    private float RandomizeLaunchSpeed()
-    {
-        return Random.Range(m_launchSpeedmin, m_launchSpeedmax);
-    }
-    
-  
-    private void NullChecks()
-    {
-        Assert.IsNotNull(m_paddle);
-        Assert.IsNotNull(m_rigidbody);
-        Assert.IsNotNull(m_audioSource);
-        Assert.IsNotNull(m_meshRender);
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.GetComponent<IHit>() !=null)
-        {
-            other.gameObject.GetComponent<IHit>().BeenHit(); 
-        }
-    }
 }

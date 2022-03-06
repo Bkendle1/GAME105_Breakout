@@ -38,15 +38,7 @@ public class Pooling :IDisposable
         ExpandPool(startsize);
     }
 
-    #region Interfaces
-    public void Dispose()
-    {
-        while (_objectPool.Count != 0)
-        {
-            GameObject.Destroy(_objectPool.Dequeue());
-        }
-    }
-    #endregion
+    
 
     #region Public
     public GameObject Get()
@@ -111,6 +103,16 @@ public class Pooling :IDisposable
     }
 
    
+    #endregion
+    
+    #region Interfaces
+    public void Dispose()
+    {
+        while (_objectPool.Count != 0)
+        {
+            GameObject.Destroy(_objectPool.Dequeue());
+        }
+    }
     #endregion
 
 

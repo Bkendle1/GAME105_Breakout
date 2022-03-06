@@ -37,18 +37,19 @@ public class InputController : Singleton<InputController>
         [SerializeField]
         private float m_deadZone = 0.1f;
         private IHandlerInput m_IHandlerInput =null ;
+   
+        private string Horizontal = "Horizontal", Vertical = "Vertical", Fire = "Fire1", Jump = "Jump", Pause ="Pause";
         public IHandlerInput SetHandler
         {
             set => m_IHandlerInput = value;
         }
-        private string Horizontal = "Horizontal", Vertical = "Vertical", Fire = "Fire1", Jump = "Jump", Pause ="Pause";
-        // Start is called before the first frame update
 
         #region  UnityAPI
         void OnEnable()
         {
             
             SceneManager.activeSceneChanged += CleanUpOnSceneChange;
+            GameManager.Instance.GameResumed += GameResumed;
             UpdateDeadZone(GameSettings.DeadZoneValue);
         }
 
@@ -56,6 +57,7 @@ public class InputController : Singleton<InputController>
         { 
             CleanUp?.Invoke();
             SceneManager.activeSceneChanged -= CleanUpOnSceneChange;
+            GameManager.Instance.GameResumed -= GameResumed;
             
         }
 
@@ -67,6 +69,11 @@ public class InputController : Singleton<InputController>
         }
         #endregion
 
+        #region  Public
+
+        
+
+        
         public void GameResumed()
         {
             m_IHandlerInput.Setup();
@@ -84,7 +91,13 @@ public class InputController : Singleton<InputController>
             if(Input.GetAxis(Vertical) >= m_deadZone || Input.GetAxis(Vertical) <= m_deadZone)
                 AxisY?.Invoke(Input.GetAxis(Horizontal) );
         }
-    
+        #endregion
+
+        #region private
+
+        
+
+       
         private void UpdateButtons()
         {
             if (Input.GetButtonDown(Pause))
@@ -106,4 +119,5 @@ public class InputController : Singleton<InputController>
            CleanUp?.Invoke();
            m_IHandlerInput = null;
         }
+        #endregion
 }

@@ -26,9 +26,9 @@ public abstract class PoolObject : MonoBehaviour
 {
     private Pooling _pool;
 
-    public Pooling pool
+    public Pooling Pool
     {
-        set { _pool = value; }
+        set => _pool = value;
     }
 
     #region public 

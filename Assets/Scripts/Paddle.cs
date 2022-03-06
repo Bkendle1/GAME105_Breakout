@@ -28,42 +28,36 @@ using UnityEngine.Assertions;
 [RequireComponent(typeof(AudioSource))]
 public class Paddle : MonoBehaviour,IHandlerInput
 {
-    [Header("Game Feel")] 
-    [SerializeField] private float m_speedDefault = 5f, m_acceleration =1.2f;
+    [SerializeField] private PaddleProp m_paddleProperties;
     [Header("Bounds")] 
     [SerializeField] private float  m_leftBounds, m_rightBounds;
     [Header(("Ball"))]
     [SerializeField] private Ball m_gameBall;
     [SerializeField] private Transform m_ballSpawnPoint = null;
     
-    private float  m_speed;
+    private float  m_speed, m_acceleration;
     private Vector3 m_location = Vector3.zero;
     private Vector3 m_startLocation;
     private MeshRenderer m_meshRender;
+    private MeshFilter m_meshFilter;
     private AudioSource m_audioSource;
     
-    public Transform GetPaddleTransform
-    {
-        get { return this.transform; }
-    }
-    public Transform GetPaddleBallSpawnPointTransform
-    {
-        get { return m_ballSpawnPoint.transform; }
-    }
+    public Transform GetPaddleTransform => this.transform;
+    public Transform GetPaddleBallSpawnPointTransform => m_ballSpawnPoint.transform;
+
     #region UnityAPI
     
-
     private void Start()
     {
-       
         Setup();
         m_startLocation = this.transform.position;
         m_location = m_startLocation;
-        m_speed = m_speedDefault;
         m_audioSource = this.GetComponent<AudioSource>();
         m_meshRender = this.GetComponent<MeshRenderer>();
+        m_meshFilter = this.GetComponent<MeshFilter>();
         GameManager.Instance.LiveLost += Death;
         NullChecks();
+        SetupPaddle();
     }
 
    
@@ -75,12 +69,14 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     #endregion
 
+    #region public
+
     public void Respawn()
     {
         transform.position  = m_startLocation;
         m_location = m_startLocation;
         transform.SetPositionAndRotation(m_location, Quaternion.identity);
-        m_speed = m_speedDefault;
+        m_speed = m_paddleProperties.GetDefaultSpeed;
         m_meshRender.enabled = true;
         m_gameBall.ResetBall();
     }
@@ -89,6 +85,15 @@ public class Paddle : MonoBehaviour,IHandlerInput
     {
         m_speed = value;
     }
+
+    public void ChangePaddle(PaddleProp prop)
+    {
+        m_paddleProperties = prop;
+        SetupPaddle();
+    }
+    #endregion
+    
+    #region Private
 
     private void Death()
     {
@@ -119,6 +124,15 @@ public class Paddle : MonoBehaviour,IHandlerInput
         //TODO: Fire Weapon pickup if your game has firing in it 
     }
 
+    private void SetupPaddle()
+    {
+        m_speed = m_paddleProperties.GetDefaultSpeed;
+        m_acceleration = m_paddleProperties.GetAcceleration;
+        m_meshFilter.mesh = m_paddleProperties.GetPaddleMesh;
+        m_meshRender.material = m_paddleProperties.GetPaddleMaterial;
+        
+    }
+
     private void NullChecks()
     {
         Assert.IsNotNull(GameManager.Instance);
@@ -127,9 +141,12 @@ public class Paddle : MonoBehaviour,IHandlerInput
         Assert.IsNotNull(m_gameBall);
         Assert.IsNotNull(m_ballSpawnPoint);
         Assert.IsNotNull(m_meshRender);
+        Assert.IsNotNull(m_paddleProperties);
+        m_paddleProperties.NullChecks();
     }
     
-
+    #endregion
+    
     #region Interfaces
     
     public void Setup()

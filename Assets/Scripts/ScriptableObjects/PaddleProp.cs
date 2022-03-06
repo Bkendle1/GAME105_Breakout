@@ -21,19 +21,30 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
-public class SceneSwap : MonoBehaviour
+[CreateAssetMenu(fileName = "PaddleObect", menuName = "ScriptableObjects/Paddle", order = 2)]
+public class PaddleProp : ScriptableObject
 {
-    [SerializeField] private int m_sceneNumber = 1;
-     public void ChangeScene()
-        {
-            SceneManager.LoadScene(m_sceneNumber);
-        }
+    [SerializeField] private float m_speedDefault = 5f, m_acceleration =1.2f;
+    [SerializeField] private AudioClip m_wallHitSFX;
+    [SerializeField] private Material m_paddleMaterial;
+    [SerializeField] private Mesh m_paddleMesh;
+    [SerializeField] private GameObject m_deathParticle;
     
-        public void ChangeScene(int SceneNumber = 0)
-        {
-            SceneManager.LoadScene(SceneNumber);
-        }
-        
+    public float GetDefaultSpeed => m_speedDefault;
+    public float GetAcceleration => m_acceleration;
+    public ref AudioClip GetWallHitSFX => ref m_wallHitSFX;
+    public ref Material GetPaddleMaterial => ref m_paddleMaterial;
+    public ref Mesh GetPaddleMesh => ref m_paddleMesh;
+    public  GameObject GetDeathParticle => m_deathParticle;
+    
+    public void NullChecks()
+    {
+        Assert.IsNotNull(m_deathParticle);
+        Assert.IsNotNull(m_wallHitSFX);
+        Assert.IsNotNull(m_deathParticle);
+        Assert.IsNotNull(m_paddleMesh);
+        Assert.IsNotNull(m_wallHitSFX);
+    }
 }

@@ -26,11 +26,15 @@ using UnityEngine;
 
 public class KillZone : MonoBehaviour
 {
- private void OnTriggerEnter(Collider other)
- {
-     if (other.gameObject.GetComponent<IDeath>() != null)
-     {
-         other.gameObject.GetComponent<IDeath>().Death();
-     }
- }
+    #region UnityAPI
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<IDeath>() != null)
+        {
+            other.gameObject.GetComponent<IDeath>().Death();
+        }
+    }
+
+    #endregion
 }

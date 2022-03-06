@@ -21,19 +21,31 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
-public class SceneSwap : MonoBehaviour
-{
-    [SerializeField] private int m_sceneNumber = 1;
-     public void ChangeScene()
-        {
-            SceneManager.LoadScene(m_sceneNumber);
-        }
+[CreateAssetMenu(fileName = "BrickObject", menuName = "ScriptableObjects/Brick", order = 3)]
+public class BrickProp : ScriptableObject
+{ 
+    [SerializeField] private int m_scoreValue = 50, m_hitPoints =1;
+    [SerializeField] private float m_powerUpDropChance = 20f;
+    [SerializeField] private AudioClip m_hitSFX;
+    [SerializeField] private Material m_brickMaterial;
+    [SerializeField] private Mesh m_brickMesh;
+    [SerializeField] private GameObject m_deathParticle;
     
-        public void ChangeScene(int SceneNumber = 0)
-        {
-            SceneManager.LoadScene(SceneNumber);
-        }
-        
+    public int GetHitPoints => m_hitPoints;
+    public int GetScoreValue => m_scoreValue;
+    public float GetPowerUpDropChance=> m_powerUpDropChance;
+    public ref AudioClip GetHitSFX => ref m_hitSFX;
+    public ref Material GetBrickMaterial => ref m_brickMaterial;
+    public ref Mesh GetBrickMesh => ref m_brickMesh;
+    public  GameObject GetDeathParticle => m_deathParticle;
+    public void NullChecks()
+    {
+        Assert.IsNotNull(m_hitSFX);
+        Assert.IsNotNull(m_brickMaterial);
+        Assert.IsNotNull(m_deathParticle);
+        Assert.IsNotNull(m_brickMesh);
+    
+    }
 }

@@ -31,15 +31,14 @@ public class GameManager : Singleton<GameManager>
     public Action GamePaused;
     public Action GameResumed;
     public Action LiveLost;
-    public bool IsGamePaused
-    {
-        get { return m_isGamePaused; }
-    }
+    public bool IsGamePaused => m_isGamePaused;
     [SerializeField] private UIText m_scoreUI = null, m_livesUI = null;
     [SerializeField] private SceneSwap m_sceneSwaper = null;
     private int m_score = 0, m_lives =3;
     private bool m_isGamePaused = false;
-    
+
+    #region UnityAPI
+
     private void Start()
     {
         
@@ -52,6 +51,14 @@ public class GameManager : Singleton<GameManager>
         InputController.Instance.PausePressed -= InputPausedCalled;
     }
 
+
+    #endregion
+
+    #region  Public
+
+    
+
+   
     public void PauseGame(bool DoGamePaused)
     {
         if (DoGamePaused)
@@ -85,7 +92,13 @@ public class GameManager : Singleton<GameManager>
         
       
     }
+    #endregion
 
+    #region Private
+
+    
+
+  
     private void GameOver()
     {
         m_sceneSwaper.ChangeScene();
@@ -107,6 +120,6 @@ public class GameManager : Singleton<GameManager>
         Assert.IsNotNull(m_livesUI);
        
     }
- 
+    #endregion
     
 }
