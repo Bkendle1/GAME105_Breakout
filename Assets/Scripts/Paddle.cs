@@ -106,9 +106,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void AxisXMovement(float value)
     {
-        m_location.x += value * m_speed * Time.deltaTime;
-        m_location.x = Mathf.Clamp(m_location.x, m_leftBounds, m_rightBounds);
-        transform.SetPositionAndRotation(m_location, Quaternion.identity);
+        //TODO:Paddle Movement Here
 
     }
     private void AxisYMovement(float value)
@@ -118,9 +116,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void FireBall()
     {
-        if (m_gameBall.IsBallInPlay)
-            return;
-        m_gameBall.LaunchBall();
+        //TODO:Fire ball into play
     }
 
     private void Fire()
