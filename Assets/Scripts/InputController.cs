@@ -97,8 +97,8 @@ public class InputController : Singleton<InputController>
 
         private void GamePaused()
         {
-          if(m_IHandlerInput != null)
-                m_IHandlerInput.CleanUp();
+            m_IHandlerInput?.CleanUp();
+
             PausePressed?.Invoke();
         }
         private void CleanUpOnSceneChange(Scene current, Scene next)

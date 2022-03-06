@@ -61,3 +61,5 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Asset store Art/Music files
+Assets/3rd_party_assets

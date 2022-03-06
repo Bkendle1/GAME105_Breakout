@@ -23,13 +23,14 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class GameManager : Singleton<GameManager>
 {
 
     public Action GamePaused;
     public Action GameResumed;
-
+    public Action LiveLost;
     public bool IsGamePaused
     {
         get { return m_isGamePaused; }
@@ -38,19 +39,12 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private SceneSwap m_sceneSwaper = null;
     private int m_score = 0, m_lives =3;
     private bool m_isGamePaused = false;
-
-    protected override void Init()
-    {
-        
-        if(m_scoreUI == null || m_livesUI == null)
-            Debug.LogError("UI TEXT IS MISSING IN INSPECTOR!");
-       
-    }
-
+    
     private void Start()
     {
         
         InputController.Instance.PausePressed += InputPausedCalled;
+        NullChecks();
     }
 
     private void OnDestroy()
@@ -77,6 +71,9 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateLives(int value)
     {
+        if(value < 0)
+            LiveLost?.Invoke();
+        
         if (m_lives - value == 0)
         {
             GameOver();
@@ -86,6 +83,7 @@ public class GameManager : Singleton<GameManager>
         m_lives += value;
         m_livesUI.UpdateUI(m_lives);
         
+      
     }
 
     private void GameOver()
@@ -99,6 +97,15 @@ public class GameManager : Singleton<GameManager>
             PauseGame(false);
         else
             PauseGame(true);
+    }
+    
+    private void NullChecks()
+    {
+        Assert.IsNotNull(m_sceneSwaper);
+       
+        Assert.IsNotNull(m_scoreUI);
+        Assert.IsNotNull(m_livesUI);
+       
     }
  
     
