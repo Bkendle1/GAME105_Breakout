@@ -21,62 +21,69 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
-using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class Brick : MonoBehaviour, IHit
+public class Brick : PoolObject, IHit
 {
-
-
     private BrickProp m_brickProperties;
     private AudioSource m_audioSource;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
     private int m_hitpoints;
 
-    #region UnityAPI
+    private Pooling m_deathEffectPool;
+    private string poolName;
 
-    
+    #region UnityAPI
 
     private void Start()
     {
         m_audioSource = GetComponent<AudioSource>();
         m_meshRender = GetComponent<MeshRenderer>();
         m_meshFilter = GetComponent<MeshFilter>();
+
         NullChecks();
-        SetupBallSettings();
+        SetupBrick();
     }
 
-    private void OnDestroy()
-    {
-        GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
-    }
     #endregion
 
-    #region  Interfaces
+    #region Public
+
+    public override void ReturnToPool()
+    {
+        GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
+        base.ReturnToPool();
+        
+    }
+
+    #endregion
+
+    #region Interfaces
+
     public void BeenHit()
     {
         //TODO: Make Brick getting hit JUICY!
-       // m_audioSource.PlayOneShot(m_hitClip, GameSettings.SFXVolume);
+        // m_audioSource.PlayOneShot(m_hitClip, GameSettings.SFXVolume);
     }
 
     public void BeenHit(GameObject HitByObject)
     {
-        
     }
+
     #endregion
-    
-    private void SetupBallSettings()
+
+    private void SetupBrick()
     {
         m_meshRender.material = m_brickProperties.GetBrickMaterial;
         m_meshFilter.mesh = m_brickProperties.GetBrickMesh;
         m_hitpoints = m_brickProperties.GetHitPoints;
+        
     }
-    
+
     private void NullChecks()
     {
-       
         Assert.IsNotNull(m_audioSource);
         Assert.IsNotNull(m_meshRender);
         Assert.IsNotNull(m_meshFilter);

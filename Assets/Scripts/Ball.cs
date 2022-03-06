@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.ComponentModel.Design;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -39,6 +40,8 @@ public class Ball : MonoBehaviour, IDeath
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
     private bool m_ballInPlay = false;
+    private Vector3 m_velocityAtPause = Vector3.zero;
+
 
     public bool IsBallInPlay => m_ballInPlay;
 
@@ -54,6 +57,30 @@ public class Ball : MonoBehaviour, IDeath
         NullChecks();
         SetupBallSettings();
         ResetBall();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.GamePaused += FreezeOnPausedGame;
+        GameManager.Instance.GameResumed += UnFreezeOnResumeGame;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.GamePaused -= FreezeOnPausedGame;
+        GameManager.Instance.GameResumed -= UnFreezeOnResumeGame;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.GetComponent<IHit>() != null)
+        {
+            other.gameObject.GetComponent<IHit>().BeenHit();
+        }
+        else
+        {
+            // m_audioSource.PlayOneShot(m_ballProperties.GetWallHitSFX);
+        }
     }
 
     #endregion
@@ -123,16 +150,17 @@ public class Ball : MonoBehaviour, IDeath
         m_ballProperties.NullChecks();
     }
 
-    private void OnCollisionEnter(Collision other)
+
+    private void FreezeOnPausedGame()
     {
-        if (other.gameObject.GetComponent<IHit>() != null)
-        {
-            other.gameObject.GetComponent<IHit>().BeenHit();
-        }
-        else
-        {
-            // m_audioSource.PlayOneShot(m_ballProperties.GetWallHitSFX);
-        }
+        m_velocityAtPause = m_rigidbody.velocity;
+        m_rigidbody.isKinematic = true;
+    }
+
+    private void UnFreezeOnResumeGame()
+    {
+        m_rigidbody.isKinematic = false;
+        m_rigidbody.velocity =  m_velocityAtPause;
     }
 
     #endregion

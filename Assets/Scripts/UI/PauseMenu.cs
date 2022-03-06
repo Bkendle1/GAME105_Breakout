@@ -20,18 +20,25 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THE SOFTWARE 
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
+
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PauseMenu : MonoBehaviour
 {
-
     [SerializeField] private GameObject m_mainGameUI, m_pauseMenu, m_firstMenuItem;
+     
+    private int m_buttonListCount;
+    
+    
+    #region UnityAPI
 
     private void Start()
     {
         GameManager.Instance.GameResumed += TurnBackOnGameUI;
         GameManager.Instance.GamePaused += TurnOnPauseMenu;
+       
         TurnBackOnGameUI();
     }
 
@@ -41,18 +48,25 @@ public class PauseMenu : MonoBehaviour
         GameManager.Instance.GamePaused -= TurnOnPauseMenu;
     }
 
+    #endregion
+
+    #region private
+
     private void TurnOnPauseMenu()
     {
         m_mainGameUI.SetActive(false);
         m_pauseMenu.SetActive(true);
-        
+
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(m_firstMenuItem);
-        
+       
     }
+
     private void TurnBackOnGameUI()
     {
         m_mainGameUI.SetActive(true);
         m_pauseMenu.SetActive(false);
     }
+
+    #endregion
 }

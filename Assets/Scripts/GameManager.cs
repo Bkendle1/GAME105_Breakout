@@ -32,11 +32,14 @@ public class GameManager : Singleton<GameManager>
     public Action GameResumed;
     public Action LiveLost;
     public bool IsGamePaused => m_isGamePaused;
+    public GameState GetGameState => m_gameState;
+    
     [SerializeField] private UIText m_scoreUI = null, m_livesUI = null;
     [SerializeField] private SceneSwap m_sceneSwaper = null;
     private int m_score = 0, m_lives =3;
     private bool m_isGamePaused = false;
-
+    private GameState m_gameState = GameState.Playing;
+    
     #region UnityAPI
 
     private void Start()
@@ -57,15 +60,20 @@ public class GameManager : Singleton<GameManager>
     #region  Public
 
     
-
-   
+    
     public void PauseGame(bool DoGamePaused)
     {
         if (DoGamePaused)
+        {
             GamePaused?.Invoke();
+            
+        }
         else
+        {
             GameResumed?.Invoke();
-        
+
+        }
+
         m_isGamePaused = DoGamePaused;
         Debug.Log("GamePaused:" + DoGamePaused);
     }
@@ -92,6 +100,11 @@ public class GameManager : Singleton<GameManager>
         
       
     }
+
+    public void LevelClear()
+    {
+        m_gameState = GameState.ClearLevel;
+    }
     #endregion
 
     #region Private
@@ -101,7 +114,9 @@ public class GameManager : Singleton<GameManager>
   
     private void GameOver()
     {
+        m_gameState = GameState.GameOver;
         m_sceneSwaper.ChangeScene();
+        
     }
 
     private void InputPausedCalled()
@@ -121,5 +136,13 @@ public class GameManager : Singleton<GameManager>
        
     }
     #endregion
+    
+}
+
+public enum GameState
+{
+    Playing,
+    GameOver,
+    ClearLevel
     
 }
