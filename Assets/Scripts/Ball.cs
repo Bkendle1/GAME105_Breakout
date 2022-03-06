@@ -114,7 +114,12 @@ public class Ball : MonoBehaviour, IDeath
 
     public void LaunchBall()
     {
-        //TODO: Launch Ball into Play 
+        if (m_ballInPlay)
+            return;
+        m_ballInPlay = true;
+        transform.SetParent(null);
+        m_rigidbody.isKinematic = false;
+        m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
     }
 
     #endregion
@@ -130,14 +135,12 @@ public class Ball : MonoBehaviour, IDeath
 
     private float RandomizeLaunchDirection()
     {
-        //TODO: Set Ball Launch Direction
-        return 0.0f;
+        return Random.Range(m_ballProperties.GetLaunchAngleMin, m_ballProperties.GetLaunchAngleMax);
     }
 
     private float RandomizeLaunchSpeed()
     {
-        //TODO: Set Ball Launch Speed
-        return 0.0f;
+        return Random.Range(m_ballProperties.GetLaunchSpeedMin, m_ballProperties.GetLaunchSpeedMax);
     }
 
 
@@ -155,12 +158,14 @@ public class Ball : MonoBehaviour, IDeath
 
     private void FreezeOnPausedGame()
     {
-       //TODO: FREEZE BALL VELOCITY AND TURN OFF RB
+        m_velocityAtPause = m_rigidbody.velocity;
+        m_rigidbody.isKinematic = true;
     }
 
     private void UnFreezeOnResumeGame()
     {
-        //TODO: UNFREEZE BALL VELOCITY AND TURN OFF RB
+        m_rigidbody.isKinematic = false;
+        m_rigidbody.velocity =  m_velocityAtPause;
     }
 
     #endregion
