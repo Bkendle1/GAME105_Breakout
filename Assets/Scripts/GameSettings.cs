@@ -22,9 +22,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public static class GameSettings
 {
@@ -35,11 +38,13 @@ public static class GameSettings
     public static float SFXVolumeGet => m_config.SFXVolume;
     public static float MusicVolumeGet => m_config.MusicVolume;
     public static int LiveCountDefault => m_config.LivesCount;
-    public static int HighScore => m_config.HighScore;
+    public static bool HasConfigLoaded => m_hasConfigLoaded;
+    public  static ref List<ScoreItem>GetScoreItems  => ref m_config.HighScoreTable;
 
-    private static GameConfig m_config = new GameConfig(new Data(0.1f, 1f, 1f, 3, 0));
+    private static GameConfig m_config = new GameConfig(0.1f, 1f, 1f, 3, new List<ScoreItem>() );
+    private static bool m_hasConfigLoaded = false;
     private const string _configFile = "Config";
-
+  
     public static void MusicVolumeSet(float value)
     {
         MusicUpdated?.Invoke(value);
@@ -51,16 +56,20 @@ public static class GameSettings
         SoundUpdated?.Invoke(value);
         m_config.SFXVolume = value;
     }
-
-    public static void HighScoreSet(int value)
-    {
-        m_config.HighScore = value;
-    }
-
+    
+    
     public static void LoadData()
     {
         if (!global::SaveData.Load(ref m_config, _configFile))
+        {
             SaveData();
+           
+        }
+        
+        if(m_config.HighScoreTable == null)
+            m_config.HighScoreTable = new List<ScoreItem>();
+        
+        m_hasConfigLoaded = true;
     }
 
     public static void SaveData()
@@ -68,6 +77,9 @@ public static class GameSettings
         SavingGame?.Invoke();
         global::SaveData.Save(m_config, _configFile);
     }
+
+   
+    
 }
 
 public static class SaveData
@@ -92,6 +104,7 @@ public static class SaveData
             Debug.Log("File loaded at " + path);
             Config = bf.Deserialize(stream) as GameConfig;
             stream.Close();
+           
             return true;
         }
         else
@@ -102,44 +115,43 @@ public static class SaveData
     }
 }
 
-[System.Serializable]
-public struct Data
-{
-    public float DeadZone;
-    public float SFXVolume;
-    public float MusicVolume;
-    public int LivesCount;
-    public int HighScore;
 
-    public Data(float dz, float sfx, float music, int lives, int score)
+
+[System.Serializable]
+public struct ScoreItem
+{
+    public string Name;
+    public int Score;
+    
+    public ScoreItem(string n = "Guest", int s = 5)
     {
-        DeadZone = dz;
-        SFXVolume = sfx;
-        MusicVolume = music;
-        LivesCount = lives;
-        HighScore = score;
+        Name = n;
+        Score = s;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class GameConfig
 {
     public float DeadZone;
     public float SFXVolume;
     public float MusicVolume;
     public int LivesCount;
-    public int HighScore;
+    public List<ScoreItem>HighScoreTable;
 
-    public GameConfig(Data Data)
+    public GameConfig(float dz, float sfx, float music, int lives, List<ScoreItem> score )
     {
-        DeadZone = Data.DeadZone;
-        SFXVolume = Data.SFXVolume;
-        MusicVolume = Data.SFXVolume;
-        LivesCount = Data.LivesCount;
-        HighScore = Data.LivesCount;
+        DeadZone = dz;
+        SFXVolume = sfx;
+        MusicVolume = music;
+        LivesCount = lives;
+        HighScoreTable = score;
     }
 
     public GameConfig()
     {
     }
 }
+
+
+

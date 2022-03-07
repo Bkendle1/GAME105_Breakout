@@ -113,9 +113,7 @@ public class GameManager : Singleton<GameManager>
 
     private void CheckForNewHighScore()
     {
-        if (m_score <= GameSettings.HighScore)
-            return;
-        GameSettings.HighScoreSet(m_score);
+       
         m_newHighScore = true;
     }
 
