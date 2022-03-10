@@ -117,7 +117,7 @@ public static class SaveData
 
 
 
-[System.Serializable]
+[Serializable]
 public struct ScoreItem
 {
     public string Name;

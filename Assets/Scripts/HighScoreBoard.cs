@@ -73,10 +73,10 @@ public class HighScoreBoard : MonoBehaviour
        
 
         foreach (ScoreItem ScoreItem in GameSettings.GetScoreItems)
-            {
-                Debug.Log(ScoreItem);
-                m_priorityQueue.Push(new ScoreboardItem (ScoreItem.Name, ScoreItem.Score));
-            }
+        {
+            Debug.Log(ScoreItem);
+            m_priorityQueue.Push(new ScoreboardItem (ScoreItem.Name, ScoreItem.Score));
+        }
         
         
       
