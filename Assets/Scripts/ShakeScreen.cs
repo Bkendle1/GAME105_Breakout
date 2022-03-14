@@ -28,14 +28,14 @@ using UnityEngine.Assertions;
 public class ShakeScreen : MonoBehaviour
 {
     [SerializeField] CameraShakeConfig _cameraShakeConfig = null;
-   
-    
+
+    #region Unity API
     
     private void Start()
     {
 
         NullChecks();
-        CameraShake.CreateShakeSetup(_cameraShakeConfig,  this.gameObject);
+        CameraShake.CreateShakeSetup(_cameraShakeConfig, this.gameObject);
 
     }
 
@@ -43,6 +43,8 @@ public class ShakeScreen : MonoBehaviour
     {
         CameraShake.ClearCamera();
     }
+    
+    #endregion
 
     #region private
 

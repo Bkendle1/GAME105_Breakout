@@ -28,6 +28,7 @@ public class BrickProp : ScriptableObject
 { 
     [SerializeField] private int m_scoreValue = 50, m_hitPoints =1;
     [SerializeField] private float m_powerUpDropChance = 20f;
+    [Range(0.0f, 1f)] [SerializeField] private float m_screenShakehit = 0.05f;
     [SerializeField] private AudioClip m_hitSFX;
     [SerializeField] private Material m_brickMaterial;
     [SerializeField] private Mesh m_brickMesh;
@@ -36,6 +37,7 @@ public class BrickProp : ScriptableObject
     public int GetHitPoints => m_hitPoints;
     public int GetScoreValue => m_scoreValue;
     public float GetPowerUpDropChance=> m_powerUpDropChance;
+    public float GetScreenShakeAmount=> m_screenShakehit;
     public ref AudioClip GetHitSFX => ref m_hitSFX;
     public ref Material GetBrickMaterial => ref m_brickMaterial;
     public ref Mesh GetBrickMesh => ref m_brickMesh;

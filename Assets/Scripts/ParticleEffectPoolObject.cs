@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 /* Copyright (c) 2022 Scott Tongue
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -19,20 +21,28 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THE SOFTWARE 
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
- */
-
+ */ 
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CameraShakeConfig", menuName = "ScriptableObjects/CamerShakeConfig", order = 2)]
-public class CameraShakeConfig : ScriptableObject
+public class ParticleEffectPoolObject : PoolObject
 {
-    [SerializeField]
-    private float m_scaleExponent = 1f;
-    [SerializeField]
-    private Vector3 m_maximumAngularShake = Vector3.one * 5, m_maximumTranslationShake = Vector3.one * .75f;
+    // Start is called before the first frame update
+    [SerializeField] private float m_timeToLive = 3f;
+    #region  UnityAPI
 
-    public float GetScaleExpontent => m_scaleExponent;
-    public Vector3 GetMaxAngularShake => m_maximumAngularShake;
-    public Vector3 GetMaxTranslationShake => m_maximumTranslationShake;
+    private void OnEnable()
+    {
+        Invoke("TurnOff", m_timeToLive );
+    }
+
+    #endregion
+
+    #region private
+
+    private void TurnOff()
+    {
+        ReturnToPool();
+    }
+
+    #endregion
 }
-

@@ -70,7 +70,7 @@ public class SaveWarning : MonoBehaviour
 
     private void TurnOnWarning()
     {
-        Debug.Log("called");
+        Debug.Log(" Save warning called");
         m_fader.StartFade(m_fadeTime, 1f);
         Invoke("TurnOffWarning", m_fadeTime + 4f);
     }

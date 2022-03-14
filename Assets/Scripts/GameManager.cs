@@ -81,14 +81,16 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateLives(int value)
     {
-        if (value < 0)
-            LiveLost?.Invoke();
-
-        if (m_lives - value == 0)
+        if (m_lives + value <= 0)
         {
             GameOver();
             return;
         }
+        
+        if (value < 0)
+            LiveLost?.Invoke();
+
+       
 
         m_lives += value;
         m_livesUI.UpdateUI(m_lives);
@@ -119,6 +121,8 @@ public class GameManager : Singleton<GameManager>
 
     private void InputPausedCalled()
     {
+        if (m_gameState == GameState.GameOver)
+            return;
         if (m_isGamePaused)
             PauseGame(false);
         else

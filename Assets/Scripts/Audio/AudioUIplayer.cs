@@ -21,28 +21,72 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Assertions;
 
-[RequireComponent(typeof(EventTrigger))]
-public class EventUITrigger : EventTrigger
+[RequireComponent((typeof(SFXPlayer)))]
+public class AudioUIplayer : Singleton<AudioUIplayer>
 {
-    [SerializeField] private bool m_CancelButton = false;
-
+    [SerializeField] private AudioClip m_moveSFX, m_selectSFX, m_cancelSFX;
+    private SFXPlayer m_sfxPlayer;
+   
     #region UnityAPI
-
-    public override void OnSelect(BaseEventData eventData)
+    
+    void Start()
     {
-        
-        AudioUIplayer.Instance.PlayMoveEffect();
+        NullChecks();
     }
 
-    public override void OnSubmit(BaseEventData data)
+   
+
+    #endregion
+
+    #region public
+
+    public void PlaySelectEffect()
     {
-        if (m_CancelButton)
-            AudioUIplayer.Instance.PlayCancelEffect();
-        else
-            AudioUIplayer.Instance.PlaySelectEffect();
+        m_sfxPlayer.PlayAudioClip(ref m_selectSFX);
+    }
+
+    public void PlayCancelEffect()
+    {
+        m_sfxPlayer.PlayAudioClip(ref m_cancelSFX);
+    }
+
+    public void PlayMoveEffect()
+    {
+        m_sfxPlayer.PlayAudioClip(ref m_moveSFX);
+    }
+
+    public void PlayAudioClip(ref AudioClip clip)
+    {
+        m_sfxPlayer.PlayAudioClip(ref clip);
+    }
+    public void PlayAudioClip(ref AudioClip clip, float volume )
+    {
+        m_sfxPlayer.PlayAudioClip(ref clip, volume);
+    }
+
+    #endregion
+
+
+    #region  overides
+
+    protected override void Init()
+    {
+        m_sfxPlayer = GetComponent<SFXPlayer>();
+    }
+
+    #endregion
+
+    #region private
+
+    private void NullChecks()
+    {
+        Assert.IsNotNull(m_moveSFX);
+        Assert.IsNotNull(m_selectSFX);
+        Assert.IsNotNull(m_cancelSFX);
     }
 
     #endregion

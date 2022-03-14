@@ -64,6 +64,7 @@ public class InputController : Singleton<InputController>
       
         void Update()
         {
+          
             UpdateAxis();
             UpdateButtons();
         }

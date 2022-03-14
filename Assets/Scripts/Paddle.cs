@@ -25,7 +25,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(SFXPlayer))]
 public class Paddle : MonoBehaviour,IHandlerInput
 {
     [SerializeField] private PaddleProp m_paddleProperties;
@@ -34,14 +34,15 @@ public class Paddle : MonoBehaviour,IHandlerInput
     [Header(("Ball"))]
     [SerializeField] private Ball m_gameBall;
     [SerializeField] private Transform m_ballSpawnPoint = null;
-    
+    [SerializeField] private float m_respawnTime = 3f;
     private float  m_speed, m_acceleration;
     private Vector3 m_location = Vector3.zero;
     private Vector3 m_startLocation;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
-    private AudioSource m_audioSource;
-    
+    private SFXPlayer m_sfxPlayer;
+    private Pooling m_deathPool = null;
+    private bool m_isDead =false;
     public Transform GetPaddleTransform => this.transform;
     public Transform GetPaddleBallSpawnPointTransform => m_ballSpawnPoint.transform;
 
@@ -49,7 +50,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void Awake()
     {
-        m_audioSource = this.GetComponent<AudioSource>();
+        m_sfxPlayer = this.GetComponent<SFXPlayer>();
         m_meshRender = this.GetComponent<MeshRenderer>();
         m_meshFilter = this.GetComponent<MeshFilter>();
     }
@@ -60,30 +61,28 @@ public class Paddle : MonoBehaviour,IHandlerInput
         m_startLocation = this.transform.position;
         m_location = m_startLocation;
         GameManager.Instance.LiveLost += Death;
+        GameManager.Instance.EndGame += FinalDeath;
         NullChecks();
         SetupPaddle();
     }
 
-   
+
+
+    private void OnDisable()
+    {
+        GameManager.Instance.LiveLost -= Death;
+        GameManager.Instance.EndGame -= FinalDeath;
+    }
 
     private void OnDestroy()
     {
-        GameManager.Instance.LiveLost -= Death;
+        
+        PoolManager.DeletePool(m_paddleProperties.GetDeathParticle.gameObject.name);
     }
 
     #endregion
 
     #region public
-
-    public void Respawn()
-    {
-        transform.position  = m_startLocation;
-        m_location = m_startLocation;
-        transform.SetPositionAndRotation(m_location, Quaternion.identity);
-        m_speed = m_paddleProperties.GetDefaultSpeed;
-        m_meshRender.enabled = true;
-        m_gameBall.ResetBall();
-    }
 
     public void SetPaddleSpeed(float value)
     {
@@ -92,7 +91,9 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     public void ChangePaddle(PaddleProp prop)
     {
+        PoolManager.DeletePool(m_paddleProperties.GetDeathParticle.gameObject.name);
         m_paddleProperties = prop;
+        
         SetupPaddle();
     }
     #endregion
@@ -101,11 +102,25 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void Death()
     {
+        m_isDead = true;
         m_meshRender.enabled = false;
+        m_deathPool.Get(this.transform.position, this.transform.rotation);
+        Invoke("Respawn", m_respawnTime);
+    }
+
+    private void FinalDeath()
+    {
+        m_isDead = true;
+        m_meshRender.enabled = false;
+        CameraShake.Shake(1f);
+        StartCoroutine(CameraShake.CamerShake());
+
     }
 
     private void AxisXMovement(float value)
     {
+        if (m_isDead)
+            return;
         m_location.x += value * m_speed * Time.deltaTime;
         m_location.x = Mathf.Clamp(m_location.x, m_leftBounds, m_rightBounds);
         transform.SetPositionAndRotation(m_location, Quaternion.identity);
@@ -118,7 +133,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void FireBall()
     {
-        if (m_gameBall.IsBallInPlay)
+        if (m_gameBall.IsBallInPlay || m_isDead)
             return;
         m_gameBall.LaunchBall();
     }
@@ -130,6 +145,8 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void SetupPaddle()
     {
+        PoolManager.CreatePool(m_paddleProperties.GetDeathParticle.gameObject.name, m_paddleProperties.GetDeathParticle, 3);
+        m_deathPool = PoolManager.GetPool(m_paddleProperties.GetDeathParticle.gameObject.name);
         m_speed = m_paddleProperties.GetDefaultSpeed;
         m_acceleration = m_paddleProperties.GetAcceleration;
         m_meshFilter.mesh = m_paddleProperties.GetPaddleMesh;
@@ -137,11 +154,23 @@ public class Paddle : MonoBehaviour,IHandlerInput
         
     }
 
+    private void Respawn()
+    {
+        Debug.Log("resapwned");
+        m_isDead = false;
+        m_location = m_startLocation;
+        transform.SetPositionAndRotation(m_location, Quaternion.identity);
+        m_speed = m_paddleProperties.GetDefaultSpeed;
+        transform.position = m_startLocation;
+        m_meshRender.enabled = true;
+        m_gameBall.ResetBall();
+    }
+
     private void NullChecks()
     {
         Assert.IsNotNull(GameManager.Instance);
         Assert.IsNotNull(InputController.Instance);
-        Assert.IsNotNull(m_audioSource);
+        Assert.IsNotNull(m_sfxPlayer);
         Assert.IsNotNull(m_gameBall);
         Assert.IsNotNull(m_ballSpawnPoint);
         Assert.IsNotNull(m_meshRender);
