@@ -6,3 +6,5 @@ UI TEXT, Game Manager, Input Binding, Gamepad UI input, Save/loading, SFX, music
 Students polish the game from this starting point
 
 
+#3rd party
+Uses Text Mesh Pro
