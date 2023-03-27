@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 /* Copyright (c) 2022 Scott Tongue
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -19,30 +21,27 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THE SOFTWARE 
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
- */
-
+ */ 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(EventTrigger))]
-public class EventUITrigger : EventTrigger
+public class ParticleEffectPoolObject : PoolObject
 {
-    [SerializeField] private bool m_CancelButton = false;
+    // Start is called before the first frame update
+    [SerializeField] private float m_timeToLive = 3f;
+    #region  UnityAPI
 
-    #region UnityAPI
-
-    public override void OnSelect(BaseEventData eventData)
+    private void OnEnable()
     {
-        
-        AudioUIplayer.Instance.PlayMoveEffect();
+        Invoke("TurnOff", m_timeToLive );
     }
 
-    public override void OnSubmit(BaseEventData data)
+    #endregion
+
+    #region private
+
+    private void TurnOff()
     {
-        if (m_CancelButton)
-            AudioUIplayer.Instance.PlayCancelEffect();
-        else
-            AudioUIplayer.Instance.PlaySelectEffect();
+        ReturnToPool();
     }
 
     #endregion

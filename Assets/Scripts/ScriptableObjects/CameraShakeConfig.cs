@@ -22,28 +22,17 @@
  */
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(EventTrigger))]
-public class EventUITrigger : EventTrigger
+[CreateAssetMenu(fileName = "CameraShakeConfig", menuName = "ScriptableObjects/CamerShakeConfig", order = 2)]
+public class CameraShakeConfig : ScriptableObject
 {
-    [SerializeField] private bool m_CancelButton = false;
+    [SerializeField]
+    private float m_scaleExponent = 1f;
+    [SerializeField]
+    private Vector3 m_maximumAngularShake = Vector3.one * 5, m_maximumTranslationShake = Vector3.one * .75f;
 
-    #region UnityAPI
-
-    public override void OnSelect(BaseEventData eventData)
-    {
-        
-        AudioUIplayer.Instance.PlayMoveEffect();
-    }
-
-    public override void OnSubmit(BaseEventData data)
-    {
-        if (m_CancelButton)
-            AudioUIplayer.Instance.PlayCancelEffect();
-        else
-            AudioUIplayer.Instance.PlaySelectEffect();
-    }
-
-    #endregion
+    public float GetScaleExpontent => m_scaleExponent;
+    public Vector3 GetMaxAngularShake => m_maximumAngularShake;
+    public Vector3 GetMaxTranslationShake => m_maximumTranslationShake;
 }
+

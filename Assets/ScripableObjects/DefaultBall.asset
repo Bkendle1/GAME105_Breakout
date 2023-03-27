@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a266178663b3cdf439e92cce7502ebfb, type: 3}
   m_Name: DefaultBall
   m_EditorClassIdentifier: 
-  m_deathSFX: {fileID: 8300000, guid: 8c76d3a862d37544087075554ff7fe2f, type: 3}
-  m_wallHitSFX: {fileID: 8300000, guid: 8c76d3a862d37544087075554ff7fe2f, type: 3}
+  m_deathSFX: {fileID: 8300000, guid: 43bdc00a18950894aad3d8fd83074206, type: 3}
+  m_wallHitSFX: {fileID: 8300000, guid: 43bdc00a18950894aad3d8fd83074206, type: 3}
   m_ballMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_ballMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_deathParticle: {fileID: 2134664573799713696, guid: 4ce5f87ea655517419f092e7116a005b, type: 3}
-  m_launchSpeedMin: 50
-  m_launchSpeedMax: 90
+  m_launchSpeedMin: 500
+  m_launchSpeedMax: 1000
   m_launchAngleMin: 30
   m_launchAngleMax: 90
-  m_bounceSpeed: 1
+  m_bounceSpeed: 5

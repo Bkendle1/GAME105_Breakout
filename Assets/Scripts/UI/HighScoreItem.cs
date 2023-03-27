@@ -20,30 +20,40 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. THE SOFTWARE 
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
-
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Assertions;
 
-[RequireComponent(typeof(EventTrigger))]
-public class EventUITrigger : EventTrigger
+
+public class HighScoreItem : MonoBehaviour
 {
-    [SerializeField] private bool m_CancelButton = false;
+    [SerializeField]
+    private UIText m_nameUI, m_scoreUI;
 
     #region UnityAPI
 
-    public override void OnSelect(BaseEventData eventData)
+    private void Start()
     {
-        
-        AudioUIplayer.Instance.PlayMoveEffect();
+        NullChecks();
     }
 
-    public override void OnSubmit(BaseEventData data)
-    {
-        if (m_CancelButton)
-            AudioUIplayer.Instance.PlayCancelEffect();
-        else
-            AudioUIplayer.Instance.PlaySelectEffect();
-    }
+    #endregion
 
+    #region public
+
+    public void SetHighScoreItem(string name, int score)
+    {
+        m_nameUI.UpdateUI(name);
+        m_scoreUI.UpdateUI(score);
+    }
+    
+
+    #endregion
+    #region private 
+    private void NullChecks()
+    {
+        Assert.IsNotNull(m_nameUI);
+        Assert.IsNotNull(m_scoreUI);
+    }
+    
     #endregion
 }

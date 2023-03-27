@@ -23,17 +23,19 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class InputController : Singleton<InputController>
 {
+ 
         public Action FirePressed;
         public Action JumpPressed;
         public Action PausePressed;
         public Action CleanUp;
         public Action<float> AxisX;
         public Action<float> AxisY;
-        
+        private PlayerInput m_input;
         [SerializeField]
         private float m_deadZone = 0.1f;
         private IHandlerInput m_IHandlerInput =null ;
@@ -47,7 +49,10 @@ public class InputController : Singleton<InputController>
         #region  UnityAPI
         void OnEnable()
         {
-            
+            m_input = new PlayerInput();
+            m_input.Player.Enable();
+            m_input.Player.Pause.performed += GamePaused;
+            m_input.Player.Fire.performed += FireShoot;
             SceneManager.activeSceneChanged += CleanUpOnSceneChange;
             GameManager.Instance.GameResumed += GameResumed;
             UpdateDeadZone(GameSettings.DeadZoneValue);
@@ -55,15 +60,23 @@ public class InputController : Singleton<InputController>
 
         private void OnDisable()
         { 
+           
             CleanUp?.Invoke();
             SceneManager.activeSceneChanged -= CleanUpOnSceneChange;
             GameManager.Instance.GameResumed -= GameResumed;
-            
+            m_input.Player.Pause.performed -= GamePaused;
+            m_input.Player.Fire.performed -= FireShoot;
         }
 
-      
+        private void OnDestroy()
+        {
+            m_input.Dispose();
+        }
+
+
         void Update()
         {
+          
             UpdateAxis();
             UpdateButtons();
         }
@@ -86,10 +99,10 @@ public class InputController : Singleton<InputController>
         private void UpdateAxis()
         {
           
-            if(Input.GetAxis(Horizontal) >= m_deadZone || Input.GetAxis(Horizontal) <= m_deadZone)
-                AxisX?.Invoke(Input.GetAxis(Horizontal) );
-            if(Input.GetAxis(Vertical) >= m_deadZone || Input.GetAxis(Vertical) <= m_deadZone)
-                AxisY?.Invoke(Input.GetAxis(Horizontal) );
+            if(m_input.Player.Move.ReadValue<Vector2>().x >= m_deadZone || m_input.Player.Move.ReadValue<Vector2>().x  <= m_deadZone)
+                AxisX?.Invoke(m_input.Player.Move.ReadValue<Vector2>().x  );
+            if(m_input.Player.Move.ReadValue<Vector2>().y >= m_deadZone || m_input.Player.Move.ReadValue<Vector2>().y <= m_deadZone)
+                AxisY?.Invoke(m_input.Player.Move.ReadValue<Vector2>().y );
         }
         #endregion
 
@@ -100,24 +113,30 @@ public class InputController : Singleton<InputController>
        
         private void UpdateButtons()
         {
-            if (Input.GetButtonDown(Pause))
-                GamePaused();
+          
             if(Input.GetButtonDown(Jump))
                 JumpPressed?.Invoke();
             if(Input.GetButtonDown(Fire))
                 FirePressed?.Invoke();
         }
 
-        private void GamePaused()
+       
+        private void GamePaused(InputAction.CallbackContext context)
         {
             m_IHandlerInput?.CleanUp();
 
             PausePressed?.Invoke();
+        }
+
+        private void FireShoot(InputAction.CallbackContext context)
+        {
+            FirePressed?.Invoke();
         }
         private void CleanUpOnSceneChange(Scene current, Scene next)
         {
            CleanUp?.Invoke();
            m_IHandlerInput = null;
         }
+        
         #endregion
 }

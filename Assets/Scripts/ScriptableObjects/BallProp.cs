@@ -42,7 +42,8 @@ public class BallProp : ScriptableObject
     public ref AudioClip GetWallHitSFX => ref m_wallHitSFX;
     public ref Material GetBallMaterial => ref m_ballMaterial;
     public ref Mesh GetBallMesh => ref m_ballMesh;
-
+    public ref GameObject GetDeathParticlesRef => ref m_deathParticle;
+    public  GameObject GetDeathParticles =>  m_deathParticle;
     public void NullChecks()
     {
         Assert.IsNotNull(m_deathSFX);

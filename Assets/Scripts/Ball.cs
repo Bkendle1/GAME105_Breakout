@@ -29,19 +29,21 @@ using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
 
 
-[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(SFXPlayer))]
 [RequireComponent(typeof(Rigidbody))]
 public class Ball : MonoBehaviour, IDeath
 {
     [SerializeField] private Paddle m_paddle;
     [SerializeField] private BallProp m_ballProperties;
+    [Range(0.0f, 1f)]
+    [SerializeField] private float m_deathScreenShake = 0.5f, m_wallHitShake = 0.1f;
     private Rigidbody m_rigidbody = null;
-    private AudioSource m_audioSource;
+    private SFXPlayer m_sfxPlayer =null;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
     private bool m_ballInPlay = false;
     private Vector3 m_velocityAtPause = Vector3.zero;
-
+    private Pooling m_deathPool = null; 
 
     public bool IsBallInPlay => m_ballInPlay;
 
@@ -50,7 +52,7 @@ public class Ball : MonoBehaviour, IDeath
     private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
-        m_audioSource = GetComponent<AudioSource>();
+        m_sfxPlayer = GetComponent<SFXPlayer>();
         m_meshRender = GetComponent<MeshRenderer>();
         m_meshFilter = GetComponent<MeshFilter>();
     }
@@ -76,6 +78,11 @@ public class Ball : MonoBehaviour, IDeath
         GameManager.Instance.GameResumed -= UnFreezeOnResumeGame;
     }
 
+    private void OnDestroy()
+    {
+        PoolManager.DeletePool(m_ballProperties.GetDeathParticles.gameObject.name);
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.GetComponent<IHit>() != null)
@@ -84,7 +91,10 @@ public class Ball : MonoBehaviour, IDeath
         }
         else
         {
-            // m_audioSource.PlayOneShot(m_ballProperties.GetWallHitSFX);
+             m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetWallHitSFX);
+             CameraShake.Shake(m_wallHitShake);
+             StartCoroutine(CameraShake.CamerShake());
+             
         }
     }
 
@@ -95,11 +105,13 @@ public class Ball : MonoBehaviour, IDeath
     public void UpdateBallProperties(BallProp prop)
     {
         m_ballProperties = prop;
+        PoolManager.DeletePool(m_ballProperties.GetDeathParticles.gameObject.name);
         SetupBallSettings();
     }
 
     public void ResetBall()
     {
+        m_ballInPlay = false;
         m_rigidbody.isKinematic = true;
         m_rigidbody.velocity = Vector3.zero;
         transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
@@ -114,7 +126,12 @@ public class Ball : MonoBehaviour, IDeath
 
     public void LaunchBall()
     {
-        //TODO: Launch Ball into Play 
+        if (m_ballInPlay)
+            return;
+        m_ballInPlay = true;
+        transform.SetParent(null);
+        m_rigidbody.isKinematic = false;
+        m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
     }
 
     #endregion
@@ -124,20 +141,21 @@ public class Ball : MonoBehaviour, IDeath
 
     private void SetupBallSettings()
     {
+        
+        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 3);
+        m_deathPool = PoolManager.GetPool(m_ballProperties.GetDeathParticles.gameObject.name);
         m_meshRender.material = m_ballProperties.GetBallMaterial;
         m_meshFilter.mesh = m_ballProperties.GetBallMesh;
     }
 
     private float RandomizeLaunchDirection()
     {
-        //TODO: Set Ball Launch Direction
-        return 0.0f;
+        return Random.Range(m_ballProperties.GetLaunchAngleMin, m_ballProperties.GetLaunchAngleMax);
     }
 
     private float RandomizeLaunchSpeed()
     {
-        //TODO: Set Ball Launch Speed
-        return 0.0f;
+        return Random.Range(m_ballProperties.GetLaunchSpeedMin, m_ballProperties.GetLaunchSpeedMax);
     }
 
 
@@ -145,7 +163,7 @@ public class Ball : MonoBehaviour, IDeath
     {
         Assert.IsNotNull(m_paddle);
         Assert.IsNotNull(m_rigidbody);
-        Assert.IsNotNull(m_audioSource);
+        Assert.IsNotNull(m_sfxPlayer);
         Assert.IsNotNull(m_meshRender);
         Assert.IsNotNull(m_meshFilter);
         Assert.IsNotNull(m_ballProperties);
@@ -155,12 +173,14 @@ public class Ball : MonoBehaviour, IDeath
 
     private void FreezeOnPausedGame()
     {
-       //TODO: FREEZE BALL VELOCITY AND TURN OFF RB
+        m_velocityAtPause = m_rigidbody.velocity;
+        m_rigidbody.isKinematic = true;
     }
 
     private void UnFreezeOnResumeGame()
     {
-        //TODO: UNFREEZE BALL VELOCITY AND TURN OFF RB
+        m_rigidbody.isKinematic = false;
+        m_rigidbody.velocity =  m_velocityAtPause;
     }
 
     #endregion
@@ -169,9 +189,17 @@ public class Ball : MonoBehaviour, IDeath
 
     public void Death()
     {
+        if (!m_ballInPlay)
+            return;
+        m_ballInPlay = false;
         GameManager.Instance.UpdateLives(-1);
+        m_rigidbody.isKinematic = true;
+        m_rigidbody.velocity = Vector3.zero;
         m_meshRender.enabled = false;
-        //m_audioSource.PlayOneShot(m_ballProperties.GetDeatSFX);
+        m_deathPool.Get(this.transform.position, this.transform.rotation );
+        m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
+        CameraShake.Shake(m_deathScreenShake);
+        StartCoroutine(CameraShake.CamerShake());
     }
 
     #endregion

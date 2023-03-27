@@ -21,29 +21,39 @@
  * SHALL NOT BE USED IN ANY ABLEISM WAY.
  */
 
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Assertions;
 
-[RequireComponent(typeof(EventTrigger))]
-public class EventUITrigger : EventTrigger
+public class ShakeScreen : MonoBehaviour
 {
-    [SerializeField] private bool m_CancelButton = false;
+    [SerializeField] CameraShakeConfig _cameraShakeConfig = null;
 
-    #region UnityAPI
-
-    public override void OnSelect(BaseEventData eventData)
+    #region Unity API
+    
+    private void Start()
     {
-        
-        AudioUIplayer.Instance.PlayMoveEffect();
+
+        NullChecks();
+        CameraShake.CreateShakeSetup(_cameraShakeConfig, this.gameObject);
+
     }
 
-    public override void OnSubmit(BaseEventData data)
+    private void OnDestroy()
     {
-        if (m_CancelButton)
-            AudioUIplayer.Instance.PlayCancelEffect();
-        else
-            AudioUIplayer.Instance.PlaySelectEffect();
+        CameraShake.ClearCamera();
     }
+    
+    #endregion
 
+    #region private
+
+    
+
+ 
+    private void NullChecks()
+    {
+        Assert.IsNotNull(_cameraShakeConfig);
+    }
     #endregion
 }
