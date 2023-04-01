@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -555,7 +555,6 @@ GameObject:
   - component: {fileID: 413799254}
   - component: {fileID: 413799253}
   - component: {fileID: 413799252}
-  - component: {fileID: 413799251}
   - component: {fileID: 413799250}
   - component: {fileID: 413799256}
   - component: {fileID: 413799257}
@@ -579,27 +578,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_paddleProperties: {fileID: 11400000, guid: d74594a8a58695b4a8f900cde97fca0a, type: 2}
-  m_leftBounds: -5
-  m_rightBounds: 5
+  m_leftBounds: -7.2
+  m_rightBounds: 8.4
   m_gameBall: {fileID: 679622113}
   m_ballSpawnPoint: {fileID: 736173689}
   m_respawnTime: 1.5
---- !u!54 &413799251
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413799249}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 72
-  m_CollisionDetection: 0
 --- !u!65 &413799252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -607,7 +590,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413799249}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a91efe600ff3fa8478b96ae030455ee6, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1628,7 +1611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_paddle: {fileID: 413799250}
   m_ballProperties: {fileID: 11400000, guid: ff1a51431b954764c96b1b20b61a1db9, type: 2}
-  m_deathScreenShake: 0.5
+  m_deathScreenShake: 1
   m_wallHitShake: 0.1
 --- !u!82 &679622114
 AudioSource:
@@ -1964,9 +1947,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0dd27d57466904396aee1458116dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSFX: {fileID: 8300000, guid: 43bdc00a18950894aad3d8fd83074206, type: 3}
-  m_selectSFX: {fileID: 8300000, guid: 43bdc00a18950894aad3d8fd83074206, type: 3}
-  m_cancelSFX: {fileID: 8300000, guid: 43bdc00a18950894aad3d8fd83074206, type: 3}
+  m_moveSFX: {fileID: 8300000, guid: c2770782840ffbb44990fe00f2bdf7d7, type: 3}
+  m_selectSFX: {fileID: 8300000, guid: bb9642c844c24fb4dbe0226ce8e647b2, type: 3}
+  m_cancelSFX: {fileID: 8300000, guid: 57701ae2d33a2384190e04abf9c4e59f, type: 3}
 --- !u!82 &833315355
 AudioSource:
   m_ObjectHideFlags: 0
