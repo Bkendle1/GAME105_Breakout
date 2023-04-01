@@ -112,10 +112,10 @@ public class GameManager : Singleton<GameManager>
         //This is where you would load the next level or the next set of bricks
         //save score to load into next scene
         m_gameState = GameState.ClearLevel;
-        Debug.Log("Level Cleared");
         if (m_gameState == GameState.ClearLevel)
         {
-            
+            Debug.Log("Level Cleared");
+
         }
         
     }

@@ -19,4 +19,4 @@ MonoBehaviour:
   m_hitSFX: {fileID: 8300000, guid: aa45d9bd7325d664cb49c7815828a409, type: 3}
   m_brickMaterial: {fileID: 2100000, guid: d5c2611926b334e488e131369218f292, type: 2}
   m_brickMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  m_deathParticle: {fileID: 2134664573799713696, guid: 4ce5f87ea655517419f092e7116a005b, type: 3}
+  m_deathParticle: {fileID: 8460667080445658512, guid: ca8c9e3f66ada6344b5bd13a314e0f92, type: 3}

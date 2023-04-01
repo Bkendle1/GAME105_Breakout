@@ -20,7 +20,7 @@ public class SwapSceneFadeAudio : MonoBehaviour
     
     #region Public
 
-    void OnClicked()
+    public void OnClicked()
     {
         if (m_hasBeenPressed)
             return;
