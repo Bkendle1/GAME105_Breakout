@@ -17,8 +17,8 @@ MonoBehaviour:
   m_ballMaterial: {fileID: 2100000, guid: d6e7475a477721949a7fa2353ffb7e32, type: 2}
   m_ballMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_deathParticle: {fileID: 7226583673155636401, guid: 3c1e0f66bd18ca247820e0824c6c5609, type: 3}
-  m_launchSpeedMin: -500
-  m_launchSpeedMax: -1000
-  m_launchAngleMin: 30
-  m_launchAngleMax: 90
+  m_launchSpeedMin: -1000
+  m_launchSpeedMax: -1500
+  m_launchAngleMin: -1000
+  m_launchAngleMax: 1000
   m_bounceSpeed: 5

@@ -43,7 +43,8 @@ public class Ball : MonoBehaviour, IDeath
     private MeshFilter m_meshFilter;
     private bool m_ballInPlay = false;
     private Vector3 m_velocityAtPause = Vector3.zero;
-    private Pooling m_deathPool = null; 
+    private Pooling m_deathPool = null;
+    private TrailRenderer m_trail;
 
     public bool IsBallInPlay => m_ballInPlay;
 
@@ -55,6 +56,7 @@ public class Ball : MonoBehaviour, IDeath
         m_sfxPlayer = GetComponent<SFXPlayer>();
         m_meshRender = GetComponent<MeshRenderer>();
         m_meshFilter = GetComponent<MeshFilter>();
+        m_trail = GetComponent<TrailRenderer>();
     }
 
     private void Start()
@@ -117,6 +119,7 @@ public class Ball : MonoBehaviour, IDeath
         transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
         transform.localPosition = Vector3.zero;
         m_meshRender.enabled = enabled;
+        m_trail.enabled = false;
     }
 
 
@@ -132,6 +135,7 @@ public class Ball : MonoBehaviour, IDeath
         transform.SetParent(null);
         m_rigidbody.isKinematic = false;
         m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
+        m_trail.enabled = true;
     }
 
     #endregion

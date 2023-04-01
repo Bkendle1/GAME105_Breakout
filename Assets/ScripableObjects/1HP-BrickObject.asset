@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06c81482e72f9604db289c25180cfb77, type: 3}
+  m_Name: 1HP-BrickObject
+  m_EditorClassIdentifier: 
+  m_scoreValue: 50
+  m_hitPoints: 1
+  m_powerUpDropChance: 0
+  m_screenShakehit: 0.521
+  m_hitSFX: {fileID: 8300000, guid: aa45d9bd7325d664cb49c7815828a409, type: 3}
+  m_brickMaterial: {fileID: 2100000, guid: ee47644675828514c8b999edaa99ee59, type: 2}
+  m_brickMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_deathParticle: {fileID: 2134664573799713696, guid: 4ce5f87ea655517419f092e7116a005b, type: 3}
