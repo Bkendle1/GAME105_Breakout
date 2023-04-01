@@ -27,7 +27,7 @@ using UnityEngine.Assertions;
 
 public class Brick : PoolObject, IHit
 {
-    private BrickProp m_brickProperties;
+    [SerializeField] private BrickProp m_brickProperties;
     private AudioSource m_audioSource;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
@@ -71,7 +71,16 @@ public class Brick : PoolObject, IHit
     public void BeenHit()
     {
         //TODO: Make Brick getting hit JUICY!
-        // m_audioSource.PlayOneShot(m_hitClip, GameSettings.SFXVolume);
+        m_audioSource.PlayOneShot(m_brickProperties.GetHitSFX, GameSettings.SFXVolumeGet);
+        //if hitpoints are greater than 1, destroy else decrement
+        m_hitpoints--;
+        if (m_hitpoints <= 1)
+        {
+            GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
+            m_deathEffectPool.Get(this.transform.localPosition, this.transform.localRotation);
+            GameManager.Instance.BrickCount(-1);
+            Destroy(this.gameObject);
+        }
     }
 
     public void BeenHit(GameObject HitByObject)
@@ -80,12 +89,19 @@ public class Brick : PoolObject, IHit
 
     #endregion
 
+
+    
     private void SetupBrick()
     {
         m_meshRender.material = m_brickProperties.GetBrickMaterial;
         m_meshFilter.mesh = m_brickProperties.GetBrickMesh;
         m_hitpoints = m_brickProperties.GetHitPoints;
-        
+        if (!PoolManager.DoesPoolExist(m_brickProperties.GetDeathParticle.gameObject.name))
+        {
+            PoolManager.CreatePool(m_brickProperties.GetDeathParticle.gameObject.name, m_brickProperties.GetDeathParticle, 3);
+        }
+        m_deathEffectPool = PoolManager.GetPool(m_brickProperties.GetDeathParticle.gameObject.name);
+
     }
 
     private void NullChecks()

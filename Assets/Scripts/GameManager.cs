@@ -79,6 +79,16 @@ public class GameManager : Singleton<GameManager>
         m_scoreUI.UpdateUI(m_score);
     }
 
+    public void BrickCount(int value)
+    {
+        int totalCount = FindObjectsOfType<Brick>().Length;
+        //if the new total count of brick is 0, game is complete
+        if (totalCount + value <= 0)
+        {
+            LevelClear();
+        }
+    }
+    
     public void UpdateLives(int value)
     {
         if (m_lives + value <= 0)
@@ -98,7 +108,16 @@ public class GameManager : Singleton<GameManager>
 
     public void LevelClear()
     {
+        //TODO Check if game is cleared
+        //This is where you would load the next level or the next set of bricks
+        //save score to load into next scene
         m_gameState = GameState.ClearLevel;
+        Debug.Log("Level Cleared");
+        if (m_gameState == GameState.ClearLevel)
+        {
+            
+        }
+        
     }
 
     public void GameOver()
