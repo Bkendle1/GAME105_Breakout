@@ -90,6 +90,7 @@ public class Ball : MonoBehaviour, IDeath
         if (other.gameObject.GetComponent<IHit>() != null)
         {
             other.gameObject.GetComponent<IHit>().BeenHit();
+            
         }
         else
         {

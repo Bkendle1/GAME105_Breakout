@@ -35,6 +35,9 @@ public class Brick : PoolObject, IHit
 
     private Pooling m_deathEffectPool;
     private string poolName;
+    
+    [SerializeField] private GameObject _replacement;
+    [SerializeField] private float _shatterForce = 100f;
 
     #region UnityAPI
 
@@ -47,8 +50,6 @@ public class Brick : PoolObject, IHit
 
     private void Start()
     {
-       
-
         NullChecks();
         SetupBrick();
     }
@@ -76,9 +77,23 @@ public class Brick : PoolObject, IHit
         m_hitpoints--;
         if (m_hitpoints <= 1)
         {
+            //update score
             GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
+            
+            //spawn death effect
             m_deathEffectPool.Get(this.transform.localPosition, this.transform.localRotation);
+            
+            //update brick count for level completion
             GameManager.Instance.BrickCount(-1);
+
+            var replacement = Instantiate(_replacement, transform.position, transform.rotation);
+            var rbs = replacement.GetComponentsInChildren<Rigidbody>();
+            foreach (var rb in rbs)
+            {
+                rb.AddExplosionForce(_shatterForce, transform.position,2f);
+            }
+            
+            //destroy object
             Destroy(this.gameObject);
         }
     }
@@ -89,7 +104,7 @@ public class Brick : PoolObject, IHit
 
     #endregion
 
-
+    
     
     private void SetupBrick()
     {
