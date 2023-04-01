@@ -1058,7 +1058,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8528767942621448333, guid: 8e01c6aa5b51a4e48a23aa0d11d8bbe7, type: 3}
       propertyPath: _shatterForce
-      value: 100
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8528767942621448333, guid: 8e01c6aa5b51a4e48a23aa0d11d8bbe7, type: 3}
       propertyPath: _explosionForce
