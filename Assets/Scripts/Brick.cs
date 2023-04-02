@@ -75,7 +75,7 @@ public class Brick : PoolObject, IHit
         m_audioSource.PlayOneShot(m_brickProperties.GetHitSFX, GameSettings.SFXVolumeGet);
         //if hitpoints are greater than 1, destroy else decrement
         m_hitpoints--;
-        if (m_hitpoints <= 1)
+        if (m_hitpoints <= 0)
         {
             //update score
             GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
