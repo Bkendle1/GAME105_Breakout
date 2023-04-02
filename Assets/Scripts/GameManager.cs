@@ -47,6 +47,8 @@ public class GameManager : Singleton<GameManager>
     {
         InputController.Instance.PausePressed += InputPausedCalled;
         NullChecks();
+        m_livesUI.UpdateUI(m_lives);
+        
     }
 
     private void OnDestroy()
