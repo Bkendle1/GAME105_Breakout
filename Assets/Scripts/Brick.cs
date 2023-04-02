@@ -32,7 +32,7 @@ public class Brick : PoolObject, IHit
     private AudioSource m_audioSource;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
-    private int m_hitpoints;
+    [HideInInspector] public int m_hitpoints;
 
     private Pooling m_deathEffectPool;
     private string poolName;
