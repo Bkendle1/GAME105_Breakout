@@ -49,6 +49,7 @@ public class GameOver : MonoBehaviour
 
     private void GameIsOver()
     {
+        Debug.Log("In GameIsOver");
         m_gameOverScreen.SetActive(true);
         AudioUIplayer.Instance.PlayAudioClip(ref m_gameOverVO);
         if (GameManager.Instance.NewHighScore)
