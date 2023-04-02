@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a266178663b3cdf439e92cce7502ebfb, type: 3}
+  m_Name: CloneBall_Object
+  m_EditorClassIdentifier: 
+  m_deathSFX: {fileID: 8300000, guid: d03201e568461344593d26ea5dad8264, type: 3}
+  m_wallHitSFX: {fileID: 8300000, guid: 72c702deb36d9864fb01a8a97327a799, type: 3}
+  m_ballMaterial: {fileID: 2100000, guid: d12d326c7ff660a40aed23b21d98c6ad, type: 2}
+  m_ballMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_deathParticle: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
+  m_launchSpeedMin: -500
+  m_launchSpeedMax: -1000
+  m_launchAngleMin: -1000
+  m_launchAngleMax: 1000
+  m_bounceSpeed: 5

@@ -32,9 +32,9 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(SFXPlayer))]
 [RequireComponent(typeof(Rigidbody))]
-public class Ball : MonoBehaviour, IDeath
+public class CloneBall : MonoBehaviour, IDeath
 {
-    [SerializeField] private Paddle m_paddle;
+    //[SerializeField] private Paddle m_paddle;
     [SerializeField] private BallProp m_ballProperties;
     [Range(0.0f, 1f)]
     [SerializeField] private float m_deathScreenShake = 0.5f, m_wallHitShake = 0.1f;
@@ -42,12 +42,12 @@ public class Ball : MonoBehaviour, IDeath
     private SFXPlayer m_sfxPlayer =null;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
-    private bool m_ballInPlay = false;
+    //private bool m_ballInPlay = false;
     private Vector3 m_velocityAtPause = Vector3.zero;
     private Pooling m_deathPool = null;
     private TrailRenderer m_trail;
 
-    public bool IsBallInPlay => m_ballInPlay;
+    //public bool IsBallInPlay => m_ballInPlay;
 
     #region UnityAPI
 
@@ -62,17 +62,19 @@ public class Ball : MonoBehaviour, IDeath
     private void Start()
     {
         m_sfxPlayer = GetComponent<SFXPlayer>();
-        m_paddle = FindObjectOfType<Paddle>();
+        //m_paddle = FindObjectOfType<Paddle>();
         m_rigidbody.useGravity = false;
         NullChecks();
         SetupBallSettings();
-        ResetBall();
+        //ResetBall();
     }
 
     private void OnEnable()
     {
-        GameManager.Instance.GamePaused += FreezeOnPausedGame;
-        GameManager.Instance.GameResumed += UnFreezeOnResumeGame;
+        //GameManager.Instance.GamePaused += FreezeOnPausedGame;
+        //GameManager.Instance.GameResumed += UnFreezeOnResumeGame;
+        //Launch clone ball once spawned 
+        LaunchBall();
     }
 
     private void OnDisable()
@@ -115,18 +117,18 @@ public class Ball : MonoBehaviour, IDeath
 
     public void ResetBall()
     {
-        m_ballInPlay = false;
-        m_rigidbody.isKinematic = true;
-        m_rigidbody.velocity = Vector3.zero;
+        //m_ballInPlay = false;
+        //m_rigidbody.isKinematic = true;
+        //m_rigidbody.velocity = Vector3.zero;
         //transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
         //this line prevents the transforms of the paddle from distorting the transforms of the ball
         //putting the ball into a parent object and then putting that parent object into the spawn point
         //protects the ball's original transforms
-        transform.parent.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
+        //transform.parent.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
         
-        transform.localPosition = Vector3.zero;
-        m_meshRender.enabled = enabled;
-        m_trail.enabled = false;
+        //transform.localPosition = Vector3.zero;
+        //m_meshRender.enabled = enabled;
+        //m_trail.enabled = false;
     }
 
 
@@ -136,11 +138,11 @@ public class Ball : MonoBehaviour, IDeath
 
     public void LaunchBall()
     {
-        if (m_ballInPlay)
-            return;
-        m_ballInPlay = true;
+        //if (m_ballInPlay)
+            //return;
+        //m_ballInPlay = true;
         //we need to null out the ball's parent instead of the ball
-        transform.parent.SetParent(null);
+        //transform.parent.SetParent(null);
         //transform.SetParent(null);
         m_rigidbody.isKinematic = false;
         m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
@@ -174,7 +176,7 @@ public class Ball : MonoBehaviour, IDeath
 
     private void NullChecks()
     {
-        Assert.IsNotNull(m_paddle);
+        //Assert.IsNotNull(m_paddle);
         Assert.IsNotNull(m_rigidbody);
         Assert.IsNotNull(m_sfxPlayer);
         Assert.IsNotNull(m_meshRender);
@@ -202,17 +204,20 @@ public class Ball : MonoBehaviour, IDeath
 
     public void Death()
     {
-        if (!m_ballInPlay)
-            return;
-        m_ballInPlay = false;
-        GameManager.Instance.UpdateLives(-1);
-        m_rigidbody.isKinematic = true;
-        m_rigidbody.velocity = Vector3.zero;
-        m_meshRender.enabled = false;
+        //if (!m_ballInPlay)
+            //return;
+        //m_ballInPlay = false;
+        //GameManager.Instance.UpdateLives(-1);
+        //m_rigidbody.isKinematic = true;
+        //m_rigidbody.velocity = Vector3.zero;
+        //m_meshRender.enabled = false;
+        //Destroy clone ball when out of bounds
+        
         m_deathPool.Get(this.transform.position, this.transform.rotation );
         m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
         CameraShake.Shake(m_deathScreenShake);
         StartCoroutine(CameraShake.CamerShake());
+        Destroy(gameObject,m_ballProperties.GetDeatSFX.length);
         
     }
 
