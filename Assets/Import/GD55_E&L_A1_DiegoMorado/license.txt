@@ -1,0 +1,11 @@
+Model Information:
+* title:	GD55_E&L_A1_DiegoMorado
+* source:	https://sketchfab.com/3d-models/gd55-el-a1-diegomorado-88143cfff5c34821ae2e2a1eaf75b2eb
+* author:	DGameVfx (https://sketchfab.com/diegomorado93)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "GD55_E&L_A1_DiegoMorado" (https://sketchfab.com/3d-models/gd55-el-a1-diegomorado-88143cfff5c34821ae2e2a1eaf75b2eb) by DGameVfx (https://sketchfab.com/diegomorado93) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

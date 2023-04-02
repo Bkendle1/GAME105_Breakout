@@ -39,7 +39,8 @@ public class Brick : PoolObject, IHit
     
     [SerializeField] private GameObject _replacement;
     [SerializeField] private float _shatterForce = 100f;
-
+    [SerializeField] private GameObject[] _powerUps;
+    
     #region UnityAPI
 
     private void Awake()
@@ -70,10 +71,12 @@ public class Brick : PoolObject, IHit
         //Generate a randomNumber that will be used to check
         //whether or not we spawn a random powerup
         //TODO randomize powerups (I added this one myself)
-        var randNum = Random.Range(0f, 100f);
-        if (randNum <= m_brickProperties.GetPowerUpDropChance)
+        var randPercentage = Random.Range(0f, 100f);
+        var randPowerUp = Random.Range(0, _powerUps.Length);
+        if (randPercentage <= m_brickProperties.GetPowerUpDropChance)
         {
             //Instantiate power up
+            Instantiate(_powerUps[randPowerUp].gameObject, transform.position, transform.rotation);
         }
     }
 
@@ -89,6 +92,9 @@ public class Brick : PoolObject, IHit
         m_hitpoints--;
         if (m_hitpoints <= 0)
         {
+            //spawn power up
+            PowerUps();
+            
             //update score
             GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
             
@@ -103,8 +109,11 @@ public class Brick : PoolObject, IHit
             var rbs = replacement.GetComponentsInChildren<Rigidbody>();
             foreach (var rb in rbs)
             {
+                //spread pieces
                 rb.AddExplosionForce(_shatterForce, transform.position,2f);
             }
+            
+            //TODO Add explosion force so the ball keeps moving
             
             //destroy object
             Destroy(this.gameObject);
@@ -124,10 +133,10 @@ public class Brick : PoolObject, IHit
         m_meshRender.material = m_brickProperties.GetBrickMaterial;
         m_meshFilter.mesh = m_brickProperties.GetBrickMesh;
         m_hitpoints = m_brickProperties.GetHitPoints;
-        if (!PoolManager.DoesPoolExist(m_brickProperties.GetDeathParticle.gameObject.name))
-        {
-            PoolManager.CreatePool(m_brickProperties.GetDeathParticle.gameObject.name, m_brickProperties.GetDeathParticle, 3);
-        }
+        // if (!PoolManager.DoesPoolExist(m_brickProperties.GetDeathParticle.gameObject.name))
+        // {
+             PoolManager.CreatePool(m_brickProperties.GetDeathParticle.gameObject.name, m_brickProperties.GetDeathParticle, 3);
+        // }
         m_deathEffectPool = PoolManager.GetPool(m_brickProperties.GetDeathParticle.gameObject.name);
 
     }

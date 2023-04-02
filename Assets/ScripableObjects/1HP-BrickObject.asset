@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_scoreValue: 1000
   m_hitPoints: 1
-  m_powerUpDropChance: 0
+  m_powerUpDropChance: 100
   m_screenShakehit: 0.521
   m_hitSFX: {fileID: 8300000, guid: aa45d9bd7325d664cb49c7815828a409, type: 3}
   m_brickMaterial: {fileID: 2100000, guid: e94c7625cd2e80d4e8fd19b24fc89d93, type: 2}

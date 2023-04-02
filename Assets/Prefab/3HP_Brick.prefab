@@ -209,8 +209,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_brickProperties: {fileID: 11400000, guid: 435c80d12fb51ac458a77cb2736888a0, type: 2}
+  m_hitpoints: 0
   _replacement: {fileID: 6140630723606081311, guid: baa90e1c8e3d02041a255fb43d4ff562, type: 3}
   _shatterForce: 1000
+  _powerUps:
+  - {fileID: 5827727049913870902, guid: 0f259566d001f2a41acebbaa8c6f429f, type: 3}
+  - {fileID: 656847594864873206, guid: b5cac57f031bb94439ed0e3a28f4fbf6, type: 3}
+  - {fileID: 8617664716486107454, guid: 49706109cda8a5647bbab09b855e6ad7, type: 3}
+  - {fileID: 5391665873577161452, guid: 5e8e07f991f16cb499bacdedfdfd990e, type: 3}
 --- !u!114 &307792299083959425
 MonoBehaviour:
   m_ObjectHideFlags: 0

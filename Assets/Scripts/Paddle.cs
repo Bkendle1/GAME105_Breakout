@@ -151,7 +151,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void SetupPaddle()
     {
-        PoolManager.CreatePool(m_paddleProperties.GetDeathParticle.gameObject.name, m_paddleProperties.GetDeathParticle, 3);
+        PoolManager.CreatePool(m_paddleProperties.GetDeathParticle.gameObject.name, m_paddleProperties.GetDeathParticle, 99);
         m_deathPool = PoolManager.GetPool(m_paddleProperties.GetDeathParticle.gameObject.name);
         m_speed = m_paddleProperties.GetDefaultSpeed;
         m_acceleration = m_paddleProperties.GetAcceleration;

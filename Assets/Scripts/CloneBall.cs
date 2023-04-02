@@ -39,13 +39,14 @@ public class CloneBall : MonoBehaviour, IDeath
     [Range(0.0f, 1f)]
     [SerializeField] private float m_deathScreenShake = 0.5f, m_wallHitShake = 0.1f;
     private Rigidbody m_rigidbody = null;
-    private SFXPlayer m_sfxPlayer =null;
+    private SFXPlayer m_sfxPlayer = null;
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
     //private bool m_ballInPlay = false;
     private Vector3 m_velocityAtPause = Vector3.zero;
     private Pooling m_deathPool = null;
     private TrailRenderer m_trail;
+    private SphereCollider _sphereCollider;
 
     //public bool IsBallInPlay => m_ballInPlay;
 
@@ -64,6 +65,7 @@ public class CloneBall : MonoBehaviour, IDeath
         m_sfxPlayer = GetComponent<SFXPlayer>();
         //m_paddle = FindObjectOfType<Paddle>();
         m_rigidbody.useGravity = false;
+        _sphereCollider = GetComponent<SphereCollider>();
         NullChecks();
         SetupBallSettings();
         //ResetBall();
@@ -71,8 +73,8 @@ public class CloneBall : MonoBehaviour, IDeath
 
     private void OnEnable()
     {
-        //GameManager.Instance.GamePaused += FreezeOnPausedGame;
-        //GameManager.Instance.GameResumed += UnFreezeOnResumeGame;
+        GameManager.Instance.GamePaused += FreezeOnPausedGame;
+        GameManager.Instance.GameResumed += UnFreezeOnResumeGame;
         //Launch clone ball once spawned 
         LaunchBall();
     }
@@ -157,7 +159,7 @@ public class CloneBall : MonoBehaviour, IDeath
     private void SetupBallSettings()
     {
         
-        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 3);
+        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 99);
         m_deathPool = PoolManager.GetPool(m_ballProperties.GetDeathParticles.gameObject.name);
         m_meshRender.material = m_ballProperties.GetBallMaterial;
         m_meshFilter.mesh = m_ballProperties.GetBallMesh;
@@ -212,7 +214,10 @@ public class CloneBall : MonoBehaviour, IDeath
         //m_rigidbody.velocity = Vector3.zero;
         //m_meshRender.enabled = false;
         //Destroy clone ball when out of bounds
-        
+
+        m_meshRender.enabled = false;
+        m_trail.enabled = false;
+        _sphereCollider.enabled = false;
         m_deathPool.Get(this.transform.position, this.transform.rotation );
         m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
         CameraShake.Shake(m_deathScreenShake);

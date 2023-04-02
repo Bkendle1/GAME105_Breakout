@@ -155,7 +155,7 @@ public class Ball : MonoBehaviour, IDeath
     private void SetupBallSettings()
     {
         
-        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 3);
+        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 99);
         m_deathPool = PoolManager.GetPool(m_ballProperties.GetDeathParticles.gameObject.name);
         m_meshRender.material = m_ballProperties.GetBallMaterial;
         m_meshFilter.mesh = m_ballProperties.GetBallMesh;
@@ -213,7 +213,6 @@ public class Ball : MonoBehaviour, IDeath
         m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
         CameraShake.Shake(m_deathScreenShake);
         StartCoroutine(CameraShake.CamerShake());
-        
     }
 
     #endregion
