@@ -118,7 +118,12 @@ public class Ball : MonoBehaviour, IDeath
         m_ballInPlay = false;
         m_rigidbody.isKinematic = true;
         m_rigidbody.velocity = Vector3.zero;
-        transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
+        //transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
+        //this line prevents the transforms of the paddle from distorting the transforms of the ball
+        //putting the ball into a parent object and then putting that parent object into the spawn point
+        //protects the ball's original transforms
+        transform.parent.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
+        
         transform.localPosition = Vector3.zero;
         m_meshRender.enabled = enabled;
         m_trail.enabled = false;
@@ -134,7 +139,9 @@ public class Ball : MonoBehaviour, IDeath
         if (m_ballInPlay)
             return;
         m_ballInPlay = true;
-        transform.SetParent(null);
+        //we need to null out the ball's parent instead of the ball
+        transform.parent.SetParent(null);
+        //transform.SetParent(null);
         m_rigidbody.isKinematic = false;
         m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
         m_trail.enabled = true;
@@ -197,29 +204,16 @@ public class Ball : MonoBehaviour, IDeath
     {
         if (!m_ballInPlay)
             return;
-        //if the ball is in play and not a clone...
-        else if (m_ballInPlay && !CompareTag("Clone"))
-        {
-            m_ballInPlay = false;
-            GameManager.Instance.UpdateLives(-1);
-            m_rigidbody.isKinematic = true;
-            m_rigidbody.velocity = Vector3.zero;
-            m_meshRender.enabled = false;
-            m_deathPool.Get(this.transform.position, this.transform.rotation );
-            m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
-            CameraShake.Shake(m_deathScreenShake);
-            StartCoroutine(CameraShake.CamerShake());
-        }
-        //if the ball is a clone...
-        else
-        {
-            m_deathPool.Get(this.transform.position, this.transform.rotation );
-            m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
-            CameraShake.Shake(m_deathScreenShake);
-            StartCoroutine(CameraShake.CamerShake());
-            Destroy(gameObject, m_ballProperties.GetDeatSFX.length);
-
-        }
+        m_ballInPlay = false;
+        GameManager.Instance.UpdateLives(-1);
+        m_rigidbody.isKinematic = true;
+        m_rigidbody.velocity = Vector3.zero;
+        m_meshRender.enabled = false;
+        m_deathPool.Get(this.transform.position, this.transform.rotation );
+        m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
+        CameraShake.Shake(m_deathScreenShake);
+        StartCoroutine(CameraShake.CamerShake());
+        
     }
 
     #endregion

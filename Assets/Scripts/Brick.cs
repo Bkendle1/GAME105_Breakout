@@ -69,6 +69,7 @@ public class Brick : PoolObject, IHit
     {
         //Generate a randomNumber that will be used to check
         //whether or not we spawn a random powerup
+        //TODO randomize powerups (I added this one myself)
         var randNum = Random.Range(0f, 100f);
         if (randNum <= m_brickProperties.GetPowerUpDropChance)
         {
