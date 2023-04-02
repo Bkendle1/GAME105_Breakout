@@ -24,6 +24,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(SFXPlayer))]
 public class Paddle : MonoBehaviour,IHandlerInput
@@ -41,6 +42,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
     private MeshRenderer m_meshRender;
     private MeshFilter m_meshFilter;
     private SFXPlayer m_sfxPlayer;
+    private BoxCollider _boxCollider;
     private Pooling m_deathPool = null;
     private bool m_isDead =false;
     public Transform GetPaddleTransform => this.transform;
@@ -53,6 +55,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
         m_sfxPlayer = this.GetComponent<SFXPlayer>();
         m_meshRender = this.GetComponent<MeshRenderer>();
         m_meshFilter = this.GetComponent<MeshFilter>();
+        _boxCollider = this.GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -104,6 +107,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
     {
         m_isDead = true;
         m_meshRender.enabled = false;
+        _boxCollider.enabled = false;
         m_deathPool.Get(this.transform.position, this.transform.rotation);
         Invoke("Respawn", m_respawnTime);
     }
@@ -112,6 +116,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
     {
         m_isDead = true;
         m_meshRender.enabled = false;
+        _boxCollider.enabled = false;
         CameraShake.Shake(1f);
         StartCoroutine(CameraShake.CamerShake());
 
@@ -164,6 +169,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
         m_speed = m_paddleProperties.GetDefaultSpeed;
         transform.position = m_startLocation;
         m_meshRender.enabled = true;
+        _boxCollider.enabled = true;
         m_gameBall.ResetBall();
     }
 
