@@ -24,6 +24,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public class Brick : PoolObject, IHit
 {
@@ -62,7 +63,17 @@ public class Brick : PoolObject, IHit
     {
         GameManager.Instance.UpdateScore(m_brickProperties.GetScoreValue);
         base.ReturnToPool();
-        
+    }
+
+    private void PowerUps()
+    {
+        //Generate a randomNumber that will be used to check
+        //whether or not we spawn a random powerup
+        var randNum = Random.Range(0f, 100f);
+        if (randNum <= m_brickProperties.GetPowerUpDropChance)
+        {
+            //Instantiate power up
+        }
     }
 
     #endregion
@@ -86,6 +97,7 @@ public class Brick : PoolObject, IHit
             //update brick count for level completion
             GameManager.Instance.BrickCount(-1);
 
+            //instantiate broken brick
             var replacement = Instantiate(_replacement, transform.position, transform.rotation);
             var rbs = replacement.GetComponentsInChildren<Rigidbody>();
             foreach (var rb in rbs)

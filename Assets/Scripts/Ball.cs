@@ -23,6 +23,7 @@
 
 using System;
 using System.ComponentModel.Design;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -196,15 +197,29 @@ public class Ball : MonoBehaviour, IDeath
     {
         if (!m_ballInPlay)
             return;
-        m_ballInPlay = false;
-        GameManager.Instance.UpdateLives(-1);
-        m_rigidbody.isKinematic = true;
-        m_rigidbody.velocity = Vector3.zero;
-        m_meshRender.enabled = false;
-        m_deathPool.Get(this.transform.position, this.transform.rotation );
-        m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
-        CameraShake.Shake(m_deathScreenShake);
-        StartCoroutine(CameraShake.CamerShake());
+        //if the ball is in play and not a clone...
+        else if (m_ballInPlay && !CompareTag("Clone"))
+        {
+            m_ballInPlay = false;
+            GameManager.Instance.UpdateLives(-1);
+            m_rigidbody.isKinematic = true;
+            m_rigidbody.velocity = Vector3.zero;
+            m_meshRender.enabled = false;
+            m_deathPool.Get(this.transform.position, this.transform.rotation );
+            m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
+            CameraShake.Shake(m_deathScreenShake);
+            StartCoroutine(CameraShake.CamerShake());
+        }
+        //if the ball is a clone...
+        else
+        {
+            m_deathPool.Get(this.transform.position, this.transform.rotation );
+            m_sfxPlayer.PlayAudioClip(ref m_ballProperties.GetDeatSFX);
+            CameraShake.Shake(m_deathScreenShake);
+            StartCoroutine(CameraShake.CamerShake());
+            Destroy(gameObject, m_ballProperties.GetDeatSFX.length);
+
+        }
     }
 
     #endregion
