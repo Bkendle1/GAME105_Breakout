@@ -40,7 +40,8 @@ public class GameManager : Singleton<GameManager>
     private int m_score = 0, m_lives = 3, m_highScore = 0;
     private bool m_isGamePaused = false, m_newHighScore = false;
     private GameState m_gameState = GameState.Playing;
-
+    private float ignoreBrickCount = 0f;
+    
     #region UnityAPI
 
     private void Start()
@@ -48,7 +49,8 @@ public class GameManager : Singleton<GameManager>
         InputController.Instance.PausePressed += InputPausedCalled;
         NullChecks();
         m_livesUI.UpdateUI(m_lives);
-        
+        //store the value of indestructible bricks
+        ignoreBrickCount = GameObject.FindGameObjectsWithTag("IgnoreBrick").Length;
     }
 
     private void OnDestroy()
@@ -85,7 +87,7 @@ public class GameManager : Singleton<GameManager>
     {
         int totalCount = FindObjectsOfType<Brick>().Length;
         //if the new total count of brick is 0, game is complete
-        if (totalCount + value <= 0)
+        if (totalCount + value <= (0 + ignoreBrickCount))
         {
             LevelClear();
         }
@@ -95,6 +97,12 @@ public class GameManager : Singleton<GameManager>
     {
         if (m_lives + value <= 0)
         {
+            //this is in case you lose your last life right
+            //after you win
+            if (GetGameState == GameState.ClearLevel)
+            {
+                return;
+            }
             GameOver();
             return;
         }

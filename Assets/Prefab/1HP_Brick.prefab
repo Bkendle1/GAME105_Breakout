@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6194331896521709619}
   - component: {fileID: 6194331896521709581}
   - component: {fileID: 6194331896521709580}
+  - component: {fileID: 6876826963337267529}
   m_Layer: 0
   m_Name: 1HP_Brick
   m_TagString: Untagged
@@ -218,7 +219,7 @@ MonoBehaviour:
   - {fileID: 8617664716486107454, guid: 49706109cda8a5647bbab09b855e6ad7, type: 3}
   - {fileID: 5391665873577161452, guid: 5e8e07f991f16cb499bacdedfdfd990e, type: 3}
   - {fileID: 6857330736451016694, guid: 1fae86d24c5a5e145890ebaa540fc8a7, type: 3}
-  startingPool: 10
+  startingPool: 99
 --- !u!114 &6194331896521709580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,3 +232,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d78828871f9e4648aeb830f13209675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6876826963337267529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6428846530349851998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6506785700c92d64e8e5a958bd6a9054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDuration: 3

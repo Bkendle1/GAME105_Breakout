@@ -48,7 +48,7 @@ public class BigBallPowerUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && _ballPlayer.IsBallInPlay)
         {
             _ballPlayer.transform.localScale = Vector3.one * newScale;
             _audioSource.PlayOneShot(_growSFX);

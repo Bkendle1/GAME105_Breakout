@@ -135,7 +135,7 @@ MonoBehaviour:
   m_ballProperties: {fileID: 11400000, guid: ff1a51431b954764c96b1b20b61a1db9, type: 2}
   m_deathScreenShake: 0.5
   m_wallHitShake: 0.2
-  startingPool: 10
+  startingPool: 99
   isDead: 0
 --- !u!82 &8274879935776713842
 AudioSource:

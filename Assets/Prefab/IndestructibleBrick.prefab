@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 5550962197829155210}
   - component: {fileID: 5550962197829155252}
   - component: {fileID: 5550962197829155253}
+  - component: {fileID: 8881025739138354980}
   m_Layer: 0
   m_Name: IndestructibleBrick
-  m_TagString: Untagged
+  m_TagString: IgnoreBrick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -213,7 +214,7 @@ MonoBehaviour:
   _replacement: {fileID: 4740482142892934375}
   _shatterForce: 1000
   _powerUps: []
-  startingPool: 10
+  startingPool: 99
 --- !u!114 &5550962197829155253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,3 +227,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d78828871f9e4648aeb830f13209675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8881025739138354980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740482142892934375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6506785700c92d64e8e5a958bd6a9054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDuration: 3
