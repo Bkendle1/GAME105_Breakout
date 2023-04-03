@@ -27,8 +27,13 @@ public class PowerBallPowerUp : MonoBehaviour
                 //make all bricks one shot
                 brick.m_hitpoints = 1;
                 //revert bricks to the hitpoints they had before
+                Invoke("RevertHP", _duration);
+                
                 //making them 1 shot
-                brick.m_hitpoints = currentHP;
+                void RevertHP()
+                {
+                    brick.m_hitpoints = currentHP;
+                }
                 
             }
         }

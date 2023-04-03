@@ -17,6 +17,6 @@ MonoBehaviour:
   m_powerUpDropChance: 20
   m_screenShakehit: 0.05
   m_hitSFX: {fileID: 8300000, guid: 225a7281235e0d244a9d7a6c0bb783aa, type: 3}
-  m_brickMaterial: {fileID: 2100000, guid: a74af49949acb0945b8396d6fa7b0bc5, type: 2}
+  m_brickMaterial: {fileID: 2100000, guid: 3725fc12d33361a46b00452ad38f7192, type: 2}
   m_brickMesh: {fileID: -5495902117074765545, guid: 247c95c4aeaf3af479a6195d6b16ba32, type: 3}
   m_deathParticle: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}

@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c2d13c3615510e4a8debaef5c39c3de, type: 2}
+  - {fileID: 2100000, guid: 3725fc12d33361a46b00452ad38f7192, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -209,8 +209,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_brickProperties: {fileID: 11400000, guid: b6aa87857fbf57e49ae409a96e3a5587, type: 2}
-  _replacement: {fileID: 0}
+  m_hitpoints: 0
+  _replacement: {fileID: 4740482142892934375}
   _shatterForce: 1000
+  _powerUps: []
+  startingPool: 10
 --- !u!114 &5550962197829155253
 MonoBehaviour:
   m_ObjectHideFlags: 0

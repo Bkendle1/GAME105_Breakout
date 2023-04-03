@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_deathSFX: {fileID: 8300000, guid: d03201e568461344593d26ea5dad8264, type: 3}
   m_wallHitSFX: {fileID: 8300000, guid: 72c702deb36d9864fb01a8a97327a799, type: 3}
-  m_ballMaterial: {fileID: 2100000, guid: d12d326c7ff660a40aed23b21d98c6ad, type: 2}
+  m_ballMaterial: {fileID: 2100000, guid: e155941b792199e41937a66640e0f0db, type: 2}
   m_ballMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_deathParticle: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
   m_launchSpeedMin: -500
