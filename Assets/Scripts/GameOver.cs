@@ -72,6 +72,7 @@ public class GameOver : MonoBehaviour
 
     private void NoNewScore()
     {
+        Debug.Log("no new high score");
         m_gameOverScreen.SetActive(false);
         m_tryAgainScreen.SetActive(true);
         Invoke("SwapScene", m_timeToTitleScreen);

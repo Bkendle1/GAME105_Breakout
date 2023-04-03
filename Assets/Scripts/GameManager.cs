@@ -37,7 +37,7 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private UIText m_scoreUI = null, m_livesUI = null;
 
-    private int m_score = 0, m_lives = 3;
+    private int m_score = 0, m_lives = 3, m_highScore = 0;
     private bool m_isGamePaused = false, m_newHighScore = false;
     private GameState m_gameState = GameState.Playing;
 
@@ -127,6 +127,7 @@ public class GameManager : Singleton<GameManager>
         m_gameState = GameState.GameOver;
         CheckForNewHighScore();
         EndGame?.Invoke();
+        
     }
 
     #endregion
@@ -136,8 +137,15 @@ public class GameManager : Singleton<GameManager>
 
     private void CheckForNewHighScore()
     {
-       
-        m_newHighScore = true;
+        if (m_highScore < m_score)
+        {
+            m_newHighScore = true;
+            PlayerPrefs.SetInt("highScore", m_score);
+        }
+        else
+        {
+            m_newHighScore = false;
+        }
     }
 
     private void InputPausedCalled()

@@ -63,6 +63,12 @@ public class MainMenu : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(m_mainFirstItem);
     }
 
+    public void QuitGame()
+    {
+        Debug.Log("Quit Game");
+        Application.Quit();
+    }
+
     #endregion
 
     #region private

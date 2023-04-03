@@ -21,12 +21,10 @@ public class SideToSide : MonoBehaviour
     {
         if (GameManager.Instance.IsGamePaused)
         {
-            Debug.Log("tween pause");
             move.Pause();
         }
         else
         {
-            Debug.Log("tween play");
             move.Play();
         }
         
