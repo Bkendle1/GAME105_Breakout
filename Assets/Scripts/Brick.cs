@@ -40,7 +40,7 @@ public class Brick : PoolObject, IHit
     [SerializeField] private GameObject _replacement;
     [SerializeField] private float _shatterForce = 100f;
     [SerializeField] private GameObject[] _powerUps;
-    
+    [SerializeField] private int startingPool = 10;
     #region UnityAPI
 
     private void Awake()
@@ -133,10 +133,10 @@ public class Brick : PoolObject, IHit
         m_meshRender.material = m_brickProperties.GetBrickMaterial;
         m_meshFilter.mesh = m_brickProperties.GetBrickMesh;
         m_hitpoints = m_brickProperties.GetHitPoints;
-        // if (!PoolManager.DoesPoolExist(m_brickProperties.GetDeathParticle.gameObject.name))
-        // {
-             PoolManager.CreatePool(m_brickProperties.GetDeathParticle.gameObject.name, m_brickProperties.GetDeathParticle, 3);
-        // }
+        if (!PoolManager.DoesPoolExist(m_brickProperties.GetDeathParticle.gameObject.name))
+        {
+            PoolManager.CreatePool(m_brickProperties.GetDeathParticle.gameObject.name, m_brickProperties.GetDeathParticle, startingPool);
+        }
         m_deathEffectPool = PoolManager.GetPool(m_brickProperties.GetDeathParticle.gameObject.name);
 
     }

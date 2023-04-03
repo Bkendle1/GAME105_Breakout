@@ -117,7 +117,7 @@ public class GameManager : Singleton<GameManager>
         if (m_gameState == GameState.ClearLevel)
         {
             Debug.Log("Level Cleared");
-
+            
         }
         
     }

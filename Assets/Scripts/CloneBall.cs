@@ -38,6 +38,7 @@ public class CloneBall : MonoBehaviour, IDeath
     [SerializeField] private BallProp m_ballProperties;
     [Range(0.0f, 1f)]
     [SerializeField] private float m_deathScreenShake = 0.5f, m_wallHitShake = 0.1f;
+    [SerializeField] private int startingPool = 10;
     private Rigidbody m_rigidbody = null;
     private SFXPlayer m_sfxPlayer = null;
     private MeshRenderer m_meshRender;
@@ -159,7 +160,7 @@ public class CloneBall : MonoBehaviour, IDeath
     private void SetupBallSettings()
     {
         
-        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 99);
+        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, startingPool);
         m_deathPool = PoolManager.GetPool(m_ballProperties.GetDeathParticles.gameObject.name);
         m_meshRender.material = m_ballProperties.GetBallMaterial;
         m_meshFilter.mesh = m_ballProperties.GetBallMesh;

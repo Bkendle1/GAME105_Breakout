@@ -38,6 +38,7 @@ public class Ball : MonoBehaviour, IDeath
     [SerializeField] private BallProp m_ballProperties;
     [Range(0.0f, 1f)]
     [SerializeField] private float m_deathScreenShake = 0.5f, m_wallHitShake = 0.1f;
+    [SerializeField] private int startingPool = 10;
     private Rigidbody m_rigidbody = null;
     private SFXPlayer m_sfxPlayer =null;
     private MeshRenderer m_meshRender;
@@ -46,7 +47,8 @@ public class Ball : MonoBehaviour, IDeath
     private Vector3 m_velocityAtPause = Vector3.zero;
     private Pooling m_deathPool = null;
     private TrailRenderer m_trail;
-
+    [HideInInspector] public bool isDead = false;
+    
     public bool IsBallInPlay => m_ballInPlay;
 
     #region UnityAPI
@@ -139,6 +141,7 @@ public class Ball : MonoBehaviour, IDeath
         if (m_ballInPlay)
             return;
         m_ballInPlay = true;
+        isDead = false;
         //we need to null out the ball's parent instead of the ball
         transform.parent.SetParent(null);
         //transform.SetParent(null);
@@ -155,7 +158,7 @@ public class Ball : MonoBehaviour, IDeath
     private void SetupBallSettings()
     {
         
-        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, 99);
+        PoolManager.CreatePool(m_ballProperties.GetDeathParticles.gameObject.name, m_ballProperties.GetDeathParticles, startingPool);
         m_deathPool = PoolManager.GetPool(m_ballProperties.GetDeathParticles.gameObject.name);
         m_meshRender.material = m_ballProperties.GetBallMaterial;
         m_meshFilter.mesh = m_ballProperties.GetBallMesh;
@@ -206,6 +209,7 @@ public class Ball : MonoBehaviour, IDeath
             return;
         m_ballInPlay = false;
         GameManager.Instance.UpdateLives(-1);
+        isDead = true;
         m_rigidbody.isKinematic = true;
         m_rigidbody.velocity = Vector3.zero;
         m_meshRender.enabled = false;

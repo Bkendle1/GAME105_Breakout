@@ -36,6 +36,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
     [SerializeField] private Ball m_gameBall;
     [SerializeField] private Transform m_ballSpawnPoint = null;
     [SerializeField] private float m_respawnTime = 3f;
+    [SerializeField] private int startingPool = 10;
     private float  m_speed, m_acceleration;
     private Vector3 m_location = Vector3.zero;
     private Vector3 m_startLocation;
@@ -46,6 +47,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
     private Pooling m_deathPool = null;
     private bool m_isDead =false;
     public Transform GetPaddleTransform => this.transform;
+
     public Transform GetPaddleBallSpawnPointTransform => m_ballSpawnPoint.transform;
 
     #region UnityAPI
@@ -151,7 +153,7 @@ public class Paddle : MonoBehaviour,IHandlerInput
 
     private void SetupPaddle()
     {
-        PoolManager.CreatePool(m_paddleProperties.GetDeathParticle.gameObject.name, m_paddleProperties.GetDeathParticle, 99);
+        PoolManager.CreatePool(m_paddleProperties.GetDeathParticle.gameObject.name, m_paddleProperties.GetDeathParticle, startingPool);
         m_deathPool = PoolManager.GetPool(m_paddleProperties.GetDeathParticle.gameObject.name);
         m_speed = m_paddleProperties.GetDefaultSpeed;
         m_acceleration = m_paddleProperties.GetAcceleration;
