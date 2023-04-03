@@ -3223,7 +3223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1180784186
 Transform:
   m_ObjectHideFlags: 0
@@ -3936,7 +3936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1368358436
 Transform:
   m_ObjectHideFlags: 0
@@ -4964,7 +4964,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547022514}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5228,6 +5228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687939208}
+  - component: {fileID: 1687939209}
   m_Layer: 0
   m_Name: LeftAsteroids
   m_TagString: Untagged
@@ -5257,6 +5258,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1687939209
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687939207}
+  m_Material: {fileID: 13400000, guid: 1165789a97612b5478a353a8c880ce62, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 16.400383, y: 20.804298, z: 9.854479}
+  m_Center: {x: -31.51521, y: -2.1354485, z: -8.313018}
 --- !u!1 &1731297147
 GameObject:
   m_ObjectHideFlags: 0
@@ -6243,6 +6257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2018730313}
+  - component: {fileID: 2018730314}
   m_Layer: 0
   m_Name: RightAsteroids
   m_TagString: Untagged
@@ -6271,6 +6286,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2018730314
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018730312}
+  m_Material: {fileID: 13400000, guid: 1165789a97612b5478a353a8c880ce62, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 14.45011, y: 19.596836, z: 10.984821}
+  m_Center: {x: 2.470429, y: -0.7205429, z: -20.850737}
 --- !u!1 &2036466423
 GameObject:
   m_ObjectHideFlags: 0
@@ -7123,7 +7151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8274879935776713845, guid: aa35565ce9f08394b98ef7f8995bc0cf, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa35565ce9f08394b98ef7f8995bc0cf, type: 3}

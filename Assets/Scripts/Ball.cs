@@ -120,11 +120,11 @@ public class Ball : MonoBehaviour, IDeath
         m_ballInPlay = false;
         m_rigidbody.isKinematic = true;
         m_rigidbody.velocity = Vector3.zero;
-        //transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
+        transform.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
         //this line prevents the transforms of the paddle from distorting the transforms of the ball
         //putting the ball into a parent object and then putting that parent object into the spawn point
         //protects the ball's original transforms
-        transform.parent.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
+        //transform.parent.SetParent(m_paddle.GetPaddleBallSpawnPointTransform);
         
         transform.localPosition = Vector3.zero;
         m_meshRender.enabled = enabled;
@@ -143,8 +143,8 @@ public class Ball : MonoBehaviour, IDeath
         m_ballInPlay = true;
         isDead = false;
         //we need to null out the ball's parent instead of the ball
-        transform.parent.SetParent(null);
-        //transform.SetParent(null);
+        //transform.parent.SetParent(null);
+        transform.SetParent(null);
         m_rigidbody.isKinematic = false;
         m_rigidbody.AddForce(RandomizeLaunchDirection(), -RandomizeLaunchSpeed(), 0.0f);
         m_trail.enabled = true;

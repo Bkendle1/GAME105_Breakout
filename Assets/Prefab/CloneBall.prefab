@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2790497269422855659}
   - component: {fileID: 2790497269422855671}
   - component: {fileID: 888730406171754976}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CloneBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,6 +228,7 @@ MonoBehaviour:
   m_ballProperties: {fileID: 11400000, guid: 5b31b7af07fd3f0479b26267497fe805, type: 2}
   m_deathScreenShake: 0.5
   m_wallHitShake: 0.2
+  startingPool: 10
 --- !u!135 &2790497269422855671
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8274879935776713843}
   - component: {fileID: 8274879935776713844}
   - component: {fileID: 8274879935776713845}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BallPlayer
   m_TagString: MainBall
   m_Icon: {fileID: 0}
@@ -135,6 +135,8 @@ MonoBehaviour:
   m_ballProperties: {fileID: 11400000, guid: ff1a51431b954764c96b1b20b61a1db9, type: 2}
   m_deathScreenShake: 0.5
   m_wallHitShake: 0.2
+  startingPool: 10
+  isDead: 0
 --- !u!82 &8274879935776713842
 AudioSource:
   m_ObjectHideFlags: 0
