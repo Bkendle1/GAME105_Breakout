@@ -35,13 +35,15 @@ public class GameManager : Singleton<GameManager>
     public bool IsGamePaused => m_isGamePaused;
     public GameState GetGameState => m_gameState;
 
-    [SerializeField] private UIText m_scoreUI = null, m_livesUI = null;
+    [SerializeField] private UIText m_scoreUI = null, m_livesUI = null, m_levelUI = null;
 
-    private int m_score = 0, m_lives = 3, m_highScore = 0;
+    private int m_score = 0, m_lives = 3, m_highScore = 0, m_level = 1;
     private bool m_isGamePaused = false, m_newHighScore = false;
     private GameState m_gameState = GameState.Playing;
     private float ignoreBrickCount = 0f;
-    
+
+    [SerializeField] private GameObject currentLevel;
+    [SerializeField] private GameObject nextLevel;
     #region UnityAPI
 
     private void Start()
@@ -49,6 +51,7 @@ public class GameManager : Singleton<GameManager>
         InputController.Instance.PausePressed += InputPausedCalled;
         NullChecks();
         m_livesUI.UpdateUI(m_lives);
+        m_levelUI.UpdateUI(m_level);
         //store the value of indestructible bricks
         ignoreBrickCount = GameObject.FindGameObjectsWithTag("IgnoreBrick").Length;
     }
@@ -125,7 +128,9 @@ public class GameManager : Singleton<GameManager>
         if (m_gameState == GameState.ClearLevel)
         {
             Debug.Log("Level Cleared");
-            
+            m_level++;
+            m_levelUI.UpdateUI(m_level);
+            NextLevel();
         }
         
     }
@@ -143,6 +148,16 @@ public class GameManager : Singleton<GameManager>
 
     #region Private
 
+    private void NextLevel()
+    {
+        currentLevel.SetActive(false);
+        m_gameState = GameState.Playing;
+        Debug.Log("Next level set");
+        nextLevel.SetActive(true);
+        int newBrickCount = FindObjectsOfType<Brick>().Length;
+        BrickCount(-newBrickCount);
+    }
+    
     private void CheckForNewHighScore()
     {
         if (m_highScore < m_score)

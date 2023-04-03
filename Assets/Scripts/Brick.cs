@@ -112,9 +112,7 @@ public class Brick : PoolObject, IHit
                 //spread pieces
                 rb.AddExplosionForce(_shatterForce, transform.position,2f);
             }
-            
-            //TODO Add explosion force so the ball keeps moving
-            
+
             //destroy object
             Destroy(this.gameObject);
         }

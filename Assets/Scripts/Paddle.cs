@@ -131,7 +131,6 @@ public class Paddle : MonoBehaviour,IHandlerInput
         m_location.x += value * m_speed * Time.deltaTime;
         m_location.x = Mathf.Clamp(m_location.x, m_leftBounds, m_rightBounds);
         transform.SetPositionAndRotation(m_location, Quaternion.identity);
-
     }
     private void AxisYMovement(float value)
     {
