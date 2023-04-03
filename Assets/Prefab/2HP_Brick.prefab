@@ -217,6 +217,7 @@ MonoBehaviour:
   - {fileID: 656847594864873206, guid: b5cac57f031bb94439ed0e3a28f4fbf6, type: 3}
   - {fileID: 8617664716486107454, guid: 49706109cda8a5647bbab09b855e6ad7, type: 3}
   - {fileID: 5391665873577161452, guid: 5e8e07f991f16cb499bacdedfdfd990e, type: 3}
+  - {fileID: 6857330736451016694, guid: 1fae86d24c5a5e145890ebaa540fc8a7, type: 3}
   startingPool: 10
 --- !u!114 &8528767942621448332
 MonoBehaviour:

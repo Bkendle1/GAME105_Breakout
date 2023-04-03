@@ -1,0 +1,11 @@
+Model Information:
+* title:	asteroid
+* source:	https://sketchfab.com/3d-models/asteroid-80a70567fb2a42df836e6d70204e0b68
+* author:	admone (https://sketchfab.com/admone)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "asteroid" (https://sketchfab.com/3d-models/asteroid-80a70567fb2a42df836e6d70204e0b68) by admone (https://sketchfab.com/admone) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

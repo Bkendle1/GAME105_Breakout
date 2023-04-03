@@ -72,7 +72,7 @@ public class Brick : PoolObject, IHit
         //whether or not we spawn a random powerup
         //TODO randomize powerups (I added this one myself)
         var randPercentage = Random.Range(0f, 100f);
-        var randPowerUp = Random.Range(0, _powerUps.Length);
+        var randPowerUp = Random.Range(0, _powerUps.Length-1);
         if (randPercentage <= m_brickProperties.GetPowerUpDropChance)
         {
             //Instantiate power up

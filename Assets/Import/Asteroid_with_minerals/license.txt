@@ -1,0 +1,11 @@
+Model Information:
+* title:	Asteroid with minerals
+* source:	https://sketchfab.com/3d-models/asteroid-with-minerals-1cf93f26dbc34a08a31367ea8929117f
+* author:	PeterMikielewicz (https://sketchfab.com/PeterMikielewicz)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Asteroid with minerals" (https://sketchfab.com/3d-models/asteroid-with-minerals-1cf93f26dbc34a08a31367ea8929117f) by PeterMikielewicz (https://sketchfab.com/PeterMikielewicz) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
