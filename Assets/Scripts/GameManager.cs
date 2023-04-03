@@ -44,6 +44,8 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private GameObject currentLevel;
     [SerializeField] private GameObject nextLevel;
+    private SceneSwap _sceneSwap;
+    
     #region UnityAPI
 
     private void Start()
@@ -54,6 +56,7 @@ public class GameManager : Singleton<GameManager>
         m_levelUI.UpdateUI(m_level);
         //store the value of indestructible bricks
         ignoreBrickCount = GameObject.FindGameObjectsWithTag("IgnoreBrick").Length;
+        _sceneSwap = GetComponent<SceneSwap>();
     }
 
     private void OnDestroy()
@@ -132,6 +135,11 @@ public class GameManager : Singleton<GameManager>
             m_levelUI.UpdateUI(m_level);
             NextLevel();
         }
+
+        if (m_level >= 3)
+        {
+            _sceneSwap.ChangeScene(3);
+        }
         
     }
 
@@ -155,7 +163,7 @@ public class GameManager : Singleton<GameManager>
         Debug.Log("Next level set");
         nextLevel.SetActive(true);
         int newBrickCount = FindObjectsOfType<Brick>().Length;
-        BrickCount(-newBrickCount);
+        BrickCount(newBrickCount);
     }
     
     private void CheckForNewHighScore()
